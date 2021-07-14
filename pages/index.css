@@ -8,15 +8,13 @@
 @import url('../blocks/header/__logo/header__logo.css');
 
 @import url('../blocks/profile/profile.css');
-@import url('../blocks/profile/__info-top-block/profile__info-top-block.css');
+@import url('../blocks/profile/__info-name/profile__info-name.css');
 @import url('../blocks/profile/__avatar/profile__avatar.css');
 @import url('../blocks/profile/__info/profile__info.css');
 @import url('../blocks/profile/__heading/profile__heading.css');
 @import url('../blocks/profile/__description/profile__description.css');
 @import url('../blocks/profile/__edit/profile__edit.css');
-@import url('../blocks/profile/__edit-icon/profile__edit-icon.css');
 @import url('../blocks/profile/__add-place/profile__add-place.css');
-@import url('../blocks/profile/__add-place-icon/profile__add-place-icon.css');
 
 @import url('../blocks/places/places.css');
 @import url('../blocks/place/place.css');
@@ -24,12 +22,6 @@
 @import url('../blocks/place/__like/place__like.css');
 @import url('../blocks/place/__like/_active/place__like_active.css');
 @import url('../blocks/place/__image/place__image.css');
-@import url('../blocks/place/__image/_src/place__image_src_bari.css');
-@import url('../blocks/place/__image/_src/place__image_src_belgrad.css');
-@import url('../blocks/place/__image/_src/place__image_src_paris.css');
-@import url('../blocks/place/__image/_src/place__image_src_portofino.css');
-@import url('../blocks/place/__image/_src/place__image_src_saraevo.css');
-@import url('../blocks/place/__image/_src/place__image_src_rome.css');
 @import url('../blocks/place/__heading/place__heading.css');
 
 @import url('../blocks/footer/footer.css');

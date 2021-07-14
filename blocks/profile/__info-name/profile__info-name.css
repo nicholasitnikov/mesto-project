@@ -1,11 +1,11 @@
-.profile__info-top-block {
+.profile__info-name {
     display: flex;
     padding: 0 0 8px;
     align-items: baseline;
 }
 
 @media screen and (max-width: 740px) {
-    .profile__info-top-block {
+    .profile__info-name {
         display: grid;
         grid-template-columns: 24px max-content 24px;
         grid-gap: 0 18px;
@@ -14,7 +14,7 @@
 }
 
 @media screen and (max-width: 480px) {
-    .profile__info-top-block {
+    .profile__info-name {
         grid-template-columns: 18px max-content 18px;
         grid-gap: 0 10px;
         padding: 0 24px 7px;

@@ -1,9 +1,0 @@
-.profile__zero {
-    display: none;
-}
-
-@media screen and (max-width: 740px) {
-    .profile__zero {
-        display: inherit;
-    }
-}

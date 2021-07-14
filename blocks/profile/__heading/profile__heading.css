@@ -10,6 +10,7 @@
 @media screen and (max-width: 740px) {
     .profile__heading {
         padding: 26px 0 0;
+        grid-column: 2/3;
     }
 }
 

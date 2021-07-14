@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,66 +10,61 @@
 <body class="body">
     <div class="root">
         <header class="header">
-            <img src="./images/logo.svg" alt='лого' class="header__logo">
+            <img src="./images/logo.svg" alt="лого" class="header__logo">
         </header>
         <main>
             <section class="profile">
-                <img src="./images/avatar.jpg" alt='аватар' class="profile__avatar">
+                <img src="./images/avatar.jpg" alt="аватар" class="profile__avatar">
                 <div class="profile__info">
-                    <div class="profile__info-top-block">
-                        <span class="profile_zero"></span>
+                    <div class="profile__info-name">
                         <h1 class="profile__heading">Жак-Ив Кусто</h1>
-                        <button class="profile__edit">
-                            <img class="profile__edit-icon" src="./images/edit.svg" alt="кнопка изменения профиля">
-                        </button>
+                        <button type="button" class="profile__edit"></button>
                     </div>
                     <p class="profile__description">Исследователь океана</p>
                 </div>
-                <button class="profile__add-place">
-                    <img class="profile__add-place-icon" src="./images/plus.svg" alt="кнопка добавления места">
-                </button>
+                <button type="button" class="profile__add-place"></button>
             </section>
             <section class="places">
                 <article class="place">
-                    <div class="place__image place__image_src_bari"></div>
+                    <div class="place__image" style="background-image: url('./images/places/bari.jpg')"></div>
                     <div class="place__info">
                         <h2 class="place__heading">Бари</h2>
-                        <button class="place__like"></button>
+                         <button type="button" class="place__like"></button>
                     </div>
                 </article>
                 <article class="place">
-                    <div class="place__image place__image_src_saraevo"></div>
+                    <div class="place__image" style="background-image: url('./images/places/saraevo.jpg')"></div>
                     <div class="place__info">
                         <h2 class="place__heading">Сараево</h2>
-                        <button class="place__like"></button>
+                         <button type="button" class="place__like"></button>
                     </div>
                 </article>
                 <article class="place">
-                    <div class="place__image place__image_src_paris"></div>
+                    <div class="place__image" style="background-image: url('./images/places/paris.jpg')"></div>
                     <div class="place__info">
                         <h2 class="place__heading">Париж</h2>
-                        <button class="place__like"></button>
+                         <button type="button" class="place__like"></button>
                     </div>
                 </article>
                 <article class="place">
-                    <div class="place__image place__image_src_rome"></div>
+                    <div class="place__image" style="background-image: url('./images/places/rome.jpg')"></div>
                     <div class="place__info">
                         <h2 class="place__heading">Рим</h2>
-                        <button class="place__like"></button>
+                         <button type="button" class="place__like"></button>
                     </div>
                 </article>
                 <article class="place">
-                    <div class="place__image place__image_src_portofino"></div>
+                    <div class="place__image"  style="background-image: url('./images/places/portofino.jpg')"></div>
                     <div class="place__info">
                         <h2 class="place__heading">Портофино</h2>
-                        <button class="place__like place__like_active"></button>
+                        <button type="button" class="place__like place__like_active"></button>
                     </div>
                 </article>
                 <article class="place">
-                    <div class="place__image place__image_src_belgrad"></div>
+                    <div class="place__image" style="background-image: url('./images/places/belgrad.jpg')"></div>
                     <div class="place__info">
                         <h2 class="place__heading">Белград</h2>
-                        <button class="place__like"></button>
+                        <button type="button" class="place__like"></button>
                     </div>
                 </article>
             </section>
@@ -77,17 +72,17 @@
         <footer class="footer">
             <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
         </footer>
-        <section class="popup">
+        <div class="popup">
             <div class="popup__container">
                 <h2 class="popup__heading">Редактировать профиль</h2>
-                <form action="/">
-                    <input class="popup__field" type="text" placeholder="Имя" value="Жак-Ив Кусто">
-                    <input class="popup__field" type="text" placeholder="Описание" value="Исследователь океана">
-                    <button class="popup__button">Сохранить</button>
+                <form name="userEditForm" action="/">
+                    <input name="username" class="popup__field" type="text" placeholder="Имя" value="Жак-Ив Кусто" required>
+                    <input name="description" class="popup__field" type="text" placeholder="Описание" value="Исследователь океана" required>
+                    <button class="popup__button" type="submit">Сохранить</button>
                 </form>
                 <button class="popup__close"></button>
             </div>
-        </section>
+        </div>
     </div>
 </body>
 </html>
