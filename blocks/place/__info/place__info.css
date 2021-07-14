@@ -1,0 +1,8 @@
+.place__info {
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 25px 20px 26px 21px;
+}
