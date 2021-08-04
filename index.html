@@ -72,17 +72,18 @@
         <footer class="footer">
             <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
         </footer>
-        <div class="popup">
+        <div class="popup popup_role_edit">
             <div class="popup__container">
                 <h2 class="popup__heading">Редактировать профиль</h2>
-                <form name="userEditForm" action="/">
-                    <input name="username" class="popup__field" type="text" placeholder="Имя" value="Жак-Ив Кусто" required>
-                    <input name="description" class="popup__field" type="text" placeholder="Описание" value="Исследователь океана" required>
+                <form name="userEditForm" class="form_type_useredit" action="/">
+                    <input name="username" class="popup__field popup__field_name_username" type="text" placeholder="Имя" value="Жак-Ив Кусто" required>
+                    <input name="description" class="popup__field popup__field_name_description" type="text" placeholder="Описание" value="Исследователь океана" required>
                     <button class="popup__button" type="submit">Сохранить</button>
                 </form>
                 <button type="button" class="popup__close"></button>
             </div>
         </div>
     </div>
+    <script src="./scripts/main.js"></script>
 </body>
 </html>
