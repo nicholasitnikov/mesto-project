@@ -48,20 +48,35 @@ const addPlaceForm = addPlacePopup.querySelector('.form_type_addplace');
 const addPlaceFormClose = addPlacePopup.querySelector('.popup__close');
 const addPlaceButton = document.querySelector('.profile__add-place');
 
-// Добавление элементов по-умолчанию
+const addPlace = (name, link, prepand=false) => {
 
-initialCards.forEach((card) => {
-    
     const placeElement = placeTemplate.querySelector('.place').cloneNode(true);
-    placeElement.querySelector('.place__image').style.backgroundImage = `url(${card.link})`;
-    placeElement.querySelector('.place__heading').textContent = card.name;
+
+    placeElement.querySelector('.place__image').style.backgroundImage = `url(${link})`;
+    placeElement.querySelector('.place__heading').textContent = name;
 
     placeElement.querySelector('.place__like').addEventListener('click', (e) => {
         console.log(e.target)
         e.target.classList.toggle('place__like_active')
     })
 
-    places.append(placeElement);
+    placeElement.querySelector('.place__delete').addEventListener('click', (e) => {
+        e.target.parentElement.remove();
+    })
+
+    if(prepand) {
+        places.prepend(placeElement);
+    } else {
+        places.append(placeElement);
+    }
+
+}
+
+// Добавление элементов по-умолчанию
+
+initialCards.forEach((card, index) => {
+    
+    addPlace(card.name, card.link);
 
 })
 
@@ -96,12 +111,6 @@ addPlaceFormClose.addEventListener('click', (e) => {
 
 addPlaceForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const placeElement = placeTemplate.querySelector('.place').cloneNode(true);
-    placeElement.querySelector('.place__image').style.backgroundImage = `url(${placeLinkField.value})`;
-    placeElement.querySelector('.place__heading').textContent = placeNameField.value;
-
-    places.prepend(placeElement);
-
+    addPlace(placeNameField.value, placeLinkField.value, true);
     addPlacePopup.classList.remove('popup_opened');
 })

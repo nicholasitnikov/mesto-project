@@ -23,6 +23,7 @@
 @import url('../blocks/place/__like/_active/place__like_active.css');
 @import url('../blocks/place/__image/place__image.css');
 @import url('../blocks/place/__heading/place__heading.css');
+@import url('../blocks/place/__delete/place__delete.css');
 
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');
