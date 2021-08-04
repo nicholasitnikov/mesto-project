@@ -48,6 +48,9 @@ const addPlaceForm = addPlacePopup.querySelector('.form_type_addplace');
 const addPlaceFormClose = addPlacePopup.querySelector('.popup__close');
 const addPlaceButton = document.querySelector('.profile__add-place');
 
+const imagePopup = document.querySelector('.popup_role_image');
+const imagePopupClose = imagePopup.querySelector('.popup__close');
+
 const addPlace = (name, link, prepand=false) => {
 
     const placeElement = placeTemplate.querySelector('.place').cloneNode(true);
@@ -56,12 +59,19 @@ const addPlace = (name, link, prepand=false) => {
     placeElement.querySelector('.place__heading').textContent = name;
 
     placeElement.querySelector('.place__like').addEventListener('click', (e) => {
-        console.log(e.target)
         e.target.classList.toggle('place__like_active')
     })
 
     placeElement.querySelector('.place__delete').addEventListener('click', (e) => {
         e.target.parentElement.remove();
+    })
+
+    placeElement.querySelector('.place__image').addEventListener('click', (e) => {
+        const imageSrc = e.target.style.backgroundImage;
+        const captionText = e.target.parentElement.querySelector('.place__heading').textContent;
+        imagePopup.classList.add('popup_opened');
+        imagePopup.querySelector('.popup__image').src = imageSrc.slice(imageSrc.indexOf('(') + 2, imageSrc.indexOf(')') -1);
+        imagePopup.querySelector('.popup__caption').textContent = captionText;
     })
 
     if(prepand) {
@@ -113,4 +123,8 @@ addPlaceForm.addEventListener('submit', (e) => {
     e.preventDefault();
     addPlace(placeNameField.value, placeLinkField.value, true);
     addPlacePopup.classList.remove('popup_opened');
+})
+
+imagePopupClose.addEventListener('click', () => {
+    imagePopup.classList.remove('popup_opened');
 })
