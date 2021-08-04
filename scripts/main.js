@@ -48,6 +48,23 @@ const addPlaceForm = addPlacePopup.querySelector('.form_type_addplace');
 const addPlaceFormClose = addPlacePopup.querySelector('.popup__close');
 const addPlaceButton = document.querySelector('.profile__add-place');
 
+// Добавление элементов по-умолчанию
+
+initialCards.forEach((card) => {
+    
+    const placeElement = placeTemplate.querySelector('.place').cloneNode(true);
+    placeElement.querySelector('.place__image').style.backgroundImage = `url(${card.link})`;
+    placeElement.querySelector('.place__heading').textContent = card.name;
+
+    placeElement.querySelector('.place__like').addEventListener('click', (e) => {
+        console.log(e.target)
+        e.target.classList.toggle('place__like_active')
+    })
+
+    places.append(placeElement);
+
+})
+
 // Добавление обработчиков
 
 editButton.addEventListener('click', () => {
@@ -87,16 +104,4 @@ addPlaceForm.addEventListener('submit', (e) => {
     places.prepend(placeElement);
 
     addPlacePopup.classList.remove('popup_opened');
-})
-
-// Добавление элементов по-умолчанию
-
-initialCards.forEach((card) => {
-    
-    const placeElement = placeTemplate.querySelector('.place').cloneNode(true);
-    placeElement.querySelector('.place__image').style.backgroundImage = `url(${card.link})`;
-    placeElement.querySelector('.place__heading').textContent = card.name;
-
-    places.append(placeElement);
-
 })
