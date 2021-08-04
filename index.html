@@ -33,8 +33,19 @@
             <div class="popup__container">
                 <h2 class="popup__heading">Редактировать профиль</h2>
                 <form name="userEditForm" class="form_type_useredit" action="/">
-                    <input name="username" class="popup__field popup__field_name_username" type="text" placeholder="Имя" value="Жак-Ив Кусто" required>
-                    <input name="description" class="popup__field popup__field_name_description" type="text" placeholder="Описание" value="Исследователь океана" required>
+                    <input name="username" class="popup__field popup__field_name_username" type="text" placeholder="Имя" required>
+                    <input name="description" class="popup__field popup__field_name_description" type="text" placeholder="Описание" required>
+                    <button class="popup__button" type="submit">Сохранить</button>
+                </form>
+                <button type="button" class="popup__close"></button>
+            </div>
+        </div>
+        <div class="popup popup_role_add">
+            <div class="popup__container">
+                <h2 class="popup__heading">Новое место</h2>
+                <form name="addPlaceForm" class="form_type_addplace" action="/">
+                    <input name="name" class="popup__field popup__field_name_placename" type="text" placeholder="Название" required>
+                    <input name="link" class="popup__field popup__field_name_placelink" type="text" placeholder="Ссылка на картинку" required>
                     <button class="popup__button" type="submit">Сохранить</button>
                 </form>
                 <button type="button" class="popup__close"></button>
