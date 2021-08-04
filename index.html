@@ -24,50 +24,7 @@
                 </div>
                 <button type="button" class="profile__add-place" aria-label="добавить место"></button>
             </section>
-            <section class="places">
-                <article class="place">
-                    <div class="place__image" style="background-image: url('./images/places/bari.jpg')"></div>
-                    <div class="place__info">
-                        <h2 class="place__heading">Бари</h2>
-                         <button type="button" class="place__like"></button>
-                    </div>
-                </article>
-                <article class="place">
-                    <div class="place__image" style="background-image: url('./images/places/saraevo.jpg')"></div>
-                    <div class="place__info">
-                        <h2 class="place__heading">Сараево</h2>
-                         <button type="button" class="place__like"></button>
-                    </div>
-                </article>
-                <article class="place">
-                    <div class="place__image" style="background-image: url('./images/places/paris.jpg')"></div>
-                    <div class="place__info">
-                        <h2 class="place__heading">Париж</h2>
-                         <button type="button" class="place__like"></button>
-                    </div>
-                </article>
-                <article class="place">
-                    <div class="place__image" style="background-image: url('./images/places/rome.jpg')"></div>
-                    <div class="place__info">
-                        <h2 class="place__heading">Рим</h2>
-                         <button type="button" class="place__like"></button>
-                    </div>
-                </article>
-                <article class="place">
-                    <div class="place__image"  style="background-image: url('./images/places/portofino.jpg')"></div>
-                    <div class="place__info">
-                        <h2 class="place__heading">Портофино</h2>
-                        <button type="button" class="place__like place__like_active"></button>
-                    </div>
-                </article>
-                <article class="place">
-                    <div class="place__image" style="background-image: url('./images/places/belgrad.jpg')"></div>
-                    <div class="place__info">
-                        <h2 class="place__heading">Белград</h2>
-                        <button type="button" class="place__like"></button>
-                    </div>
-                </article>
-            </section>
+            <section class="places"></section>
         </main>
         <footer class="footer">
             <p class="footer__copyright">&copy; 2021 Mesto Russia</p>
@@ -84,6 +41,15 @@
             </div>
         </div>
     </div>
+    <template id="placeTemplate">
+        <article class="place">
+            <div class="place__image" style="background-image: url('./images/places/bari.jpg')"></div>
+            <div class="place__info">
+                <h2 class="place__heading">Бари</h2>
+                 <button type="button" class="place__like"></button>
+            </div>
+        </article>
+    </template>
     <script src="./scripts/main.js"></script>
 </body>
 </html>
