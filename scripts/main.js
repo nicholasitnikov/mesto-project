@@ -23,6 +23,50 @@ const buttonPlaceAddition = document.querySelector('.profile__add-place');
 const popupImage = document.querySelector('.popup_role_image');
 const buttonCloseImagePopup = popupImage.querySelector('.popup__close');
 
+const openPopup = (popup) => {
+    popup.classList.add('popup_opened');
+}
+
+const closePopup = (popup) => {
+    popup.classList.remove('popup_opened');
+}
+
+const openPopupEditUser = () => {
+    fieldNameProfile.value = profileName.textContent;
+    fieldDescriptionProfile.value = profileDescription.textContent;
+    openPopup(popupEditUser);
+} 
+
+const closePopupEditUser = () => {
+    closePopup(popupEditUser);
+}
+
+const openPopupAdditionPlace = () => {
+    popupPlaceAddition.classList.add('popup_opened');
+    formPlaceAddition.reset();
+    openPopup(popupPlaceAddition);
+} 
+
+const closePopupAdditionPlace = () => {
+    closePopup(popupPlaceAddition);
+}
+
+const openPopupImage = (name, link) => {
+
+    openPopup(popupImage);
+    popupImage.querySelector('.popup__image').src = link;
+    popupImage.querySelector('.popup__caption').textContent = name;
+
+}
+
+const closePopupImage = () => {
+    closePopup(popupImage);
+}
+
+const removePlace = (e) => {
+    e.target.parentElement.remove();
+}
+
 const createPlace = (name, link) => {
 
     const elementPlace = templatePlace.querySelector('.place').cloneNode(true);
@@ -34,15 +78,8 @@ const createPlace = (name, link) => {
         e.target.classList.toggle('place__like_active')
     })
 
-    elementPlace.querySelector('.place__delete').addEventListener('click', (e) => {
-        e.target.parentElement.remove();
-    })
-
-    elementPlace.querySelector('.place__image').addEventListener('click', (e) => {
-        popupImage.classList.add('popup_opened');
-        popupImage.querySelector('.popup__image').src = link.slice(link.indexOf('(') + 1, link.indexOf(')') + 1);
-        popupImage.querySelector('.popup__caption').textContent = name;
-    })
+    elementPlace.querySelector('.place__delete').addEventListener('click', (e) => removePlace(e));
+    elementPlace.querySelector('.place__image').addEventListener('click', () => openPopupImage(name, link));
 
     return elementPlace;
 
@@ -60,45 +97,29 @@ const renderPlace = (elementPlace, prepand) => {
 // Добавление элементов по-умолчанию
 
 initialCards.forEach((card, index) => {
-    
     renderPlace(createPlace(card.name, card.link), false);
-
 })
 
 // Добавление обработчиков
 
-buttonEdit.addEventListener('click', () => {
-    popupEditUser.classList.add('popup_opened');
-    fieldNameProfile.value = profileName.textContent;
-    fieldDescriptionProfile.value = profileDescription.textContent;
-})
-
-buttonCloseEditUserPopup.addEventListener('click', (e) => {
-    popupEditUser.classList.remove('popup_opened');
-})
+buttonEdit.addEventListener('click', openPopupEditUser);
+buttonCloseEditUserPopup.addEventListener('click', closePopupEditUser);
 
 formEditUser.addEventListener('submit', (e) => {
     e.preventDefault();
-    popupEditUser.classList.remove('popup_opened');
     profileName.textContent = fieldNameProfile.value;
     profileDescription.textContent = fieldDescriptionProfile.value;
+    closePopupEditUser();
 })
 
-buttonPlaceAddition.addEventListener('click', () => {
-    popupPlaceAddition.classList.add('popup_opened');
-    formPlaceAddition.reset();
-});
+buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
 
-buttonClosePlaceAdditionPopup.addEventListener('click', (e) => {
-    popupPlaceAddition.classList.remove('popup_opened');
-})
+buttonClosePlaceAdditionPopup.addEventListener('click', closePopupAdditionPlace);
 
 formPlaceAddition.addEventListener('submit', (e) => {
     e.preventDefault();
     renderPlace(createPlace(fieldNamePlace.value, fieldLinkPlace.value), true);
-    popupPlaceAddition.classList.remove('popup_opened');
+    closePopupAdditionPlace();
 })
 
-buttonCloseImagePopup.addEventListener('click', () => {
-    popupImage.classList.remove('popup_opened');
-})
+buttonCloseImagePopup.addEventListener('click', closePopupImage);
