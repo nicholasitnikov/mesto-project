@@ -23,7 +23,7 @@ const buttonPlaceAddition = document.querySelector('.profile__add-place');
 const popupImage = document.querySelector('.popup_role_image');
 const buttonCloseImagePopup = popupImage.querySelector('.popup__close');
 
-const addPlace = (name, link, prepand=false) => {
+const createPlace = (name, link) => {
 
     const elementPlace = templatePlace.querySelector('.place').cloneNode(true);
 
@@ -44,6 +44,11 @@ const addPlace = (name, link, prepand=false) => {
         popupImage.querySelector('.popup__caption').textContent = name;
     })
 
+    return elementPlace;
+
+}
+
+const renderPlace = (elementPlace, prepand) => {
     if(prepand) {
         places.prepend(elementPlace);
     } else {
@@ -56,7 +61,7 @@ const addPlace = (name, link, prepand=false) => {
 
 initialCards.forEach((card, index) => {
     
-    addPlace(card.name, card.link);
+    renderPlace(createPlace(card.name, card.link), false);
 
 })
 
@@ -90,7 +95,7 @@ buttonClosePlaceAdditionPopup.addEventListener('click', (e) => {
 
 formPlaceAddition.addEventListener('submit', (e) => {
     e.preventDefault();
-    addPlace(fieldNamePlace.value, fieldLinkPlace.value, true);
+    renderPlace(createPlace(fieldNamePlace.value, fieldLinkPlace.value), true);
     popupPlaceAddition.classList.remove('popup_opened');
 })
 
