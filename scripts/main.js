@@ -81,8 +81,7 @@ formEditUser.addEventListener('submit', (e) => {
 
 buttonPlaceAddition.addEventListener('click', () => {
     popupPlaceAddition.classList.add('popup_opened');
-    fieldNamePlace.value = '';
-    fieldLinkPlace.value = '';
+    formPlaceAddition.reset();
 });
 
 buttonClosePlaceAdditionPopup.addEventListener('click', (e) => {
