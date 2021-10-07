@@ -1,7 +1,7 @@
 .popup__field {
     display: block;
     width: 358px;
-    padding: 30px 0 9px;
+    padding: 0 0 9px;
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
@@ -11,8 +11,8 @@
     outline: none;
 }
 
-.popup__field:first-of-type {
-    padding-top: 0;
+.popup__field:invalid {
+    border-color: red;
 }
 
 @media screen and (max-width: 450px) {

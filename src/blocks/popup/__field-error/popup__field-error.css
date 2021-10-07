@@ -1,0 +1,21 @@
+.popup__field-error {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: red;
+    padding-top: 5px;
+    display: block;
+    max-width: 358px;
+    min-height: 35px;
+    transition: opacity .3s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media screen and (max-width: 450px) {
+    .popup__field-error {
+        max-width: 100%;
+    }
+}
