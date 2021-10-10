@@ -9,7 +9,6 @@ export const buttonClosePlaceAdditionPopup = popupPlaceAddition.querySelector('.
 export const buttonPlaceAddition = document.querySelector('.profile__add-place');
 
 export const openPopupAdditionPlace = () => {
-    popupPlaceAddition.classList.add('popup_opened');
     formPlaceAddition.reset();
     openPopup(popupPlaceAddition);
 } 

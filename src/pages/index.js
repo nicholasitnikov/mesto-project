@@ -15,7 +15,8 @@ enableValidation({
     inputSelector: '.popup__field',
     submitButtonSelector: '.popup__button',
     inputErrorClass: '.popup__field-error',
-    errorClass: 'popup__field-error_visible'
+    errorClass: 'popup__field-error_visible',
+    disableAfterSubmit: false
 }); 
 
 enableValidation({
@@ -23,7 +24,8 @@ enableValidation({
     inputSelector: '.popup__field',
     submitButtonSelector: '.popup__button',
     inputErrorClass: '.popup__field-error',
-    errorClass: 'popup__field-error_visible'
+    errorClass: 'popup__field-error_visible',
+    disableAfterSubmit: true
 }); 
 
 // Добавление элементов по-умолчанию
@@ -61,11 +63,4 @@ modals.forEach(modal => {
             closePopup(modal);
         }
     })
-})
-
-document.addEventListener('keyup', (e) => {
-    if(e.code === 'Escape') {
-        const popup = document.querySelector('.popup_opened');
-        popup.classList.remove('popup_opened');
-    }
 })
