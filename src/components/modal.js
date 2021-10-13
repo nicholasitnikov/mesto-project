@@ -1,6 +1,7 @@
 export const modals = document.querySelectorAll('.popup');
 
-const escHandler = (e, popup) => {
+const handlePopupExit = (e, popup) => {
+    console.log('hello')
     if(e.code === 'Escape') {
         e.preventDefault();
         closePopup(popup);
@@ -9,10 +10,9 @@ const escHandler = (e, popup) => {
 
 export const openPopup = (popup) => {
     popup.classList.add('popup_opened');
-    document.addEventListener('keydown', (e) => escHandler(e, popup));
+    document.addEventListener('keydown', (e) => handlePopupExit(e, popup), { once: true });
 }
 
 export const closePopup = (popup) => {
     popup.classList.remove('popup_opened');
-    document.removeEventListener('keydown', (e) => escHandler(e, popup));
 }
