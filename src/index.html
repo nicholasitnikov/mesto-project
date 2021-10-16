@@ -13,13 +13,13 @@
         </header>
         <main>
             <section class="profile">
-                <img src="<%=require('./images/avatar.jpg')%>" alt="аватар" class="profile__avatar">
+                <div class="profile__avatar"></div>
                 <div class="profile__info">
                     <div class="profile__info-name">
-                        <h1 class="profile__heading">Жак-Ив Кусто</h1>
+                        <h1 class="profile__heading">Загрузка...</h1>
                         <button type="button" class="profile__edit" aria-label="редактировать"></button>
                     </div>
-                    <p class="profile__description">Исследователь океана</p>
+                    <p class="profile__description">Загрузка...</p>
                 </div>
                 <button type="button" class="profile__add-place" aria-label="добавить место"></button>
             </section>
@@ -49,7 +49,7 @@
                     <span class="popup__field-error-name popup__field-error popup__field-error_hidden">Ошибка</span>
                     <input autocomplete="off" type="url" id="link" name="link" class="popup__field popup__field_name_placelink" type="text" placeholder="Ссылка на картинку" required>
                     <span class="popup__field-error-link popup__field-error popup__field-error_hidden">Ошибка</span>
-                    <button class="popup__button" type="submit" disabled>Сохранить</button>
+                    <button class="popup__button" type="submit" disabled>Создать</button>
                 </form>
                 <button type="button" class="popup__close"></button>
             </div>
@@ -63,13 +63,31 @@
                 <button type="button" class="popup__close"></button>
             </div>
         </div>
+        <div class="popup popup_role_remove">
+            <div class="popup__container">
+                <h2 class="popup__heading popup__heading__small-offset">Вы уверены</h2>
+                <button class="popup__button" type="submit">Да</button>
+                <button type="button" class="popup__close"></button>
+            </div>
+        </div>
+        <div class="popup popup_role_edit-avatar">
+            <div class="popup__container">
+                <h2 class="popup__heading">Обновить аватар</h2>
+                <form name="editAvatarForm" class="form_type_editavatar" action="/">
+                    <input autocomplete="off" type="url" id="link" name="link" class="popup__field popup__field_name_edit-avatar" type="text" placeholder="Ссылка на картинку" required>
+                    <span class="popup__field-error-link popup__field-error popup__field-error_hidden">Ошибка</span>
+                    <button class="popup__button" type="submit" disabled>Сохранить</button>
+                </form>
+                <button type="button" class="popup__close"></button>
+            </div>
+        </div>
     </div>
     <template id="placeTemplate">
         <article class="place">
             <div class="place__image"></div>
             <div class="place__info">
                 <h2 class="place__heading">Бари</h2>
-                 <button type="button" class="place__like"></button>
+                 <button type="button" class="place__like">1</button>
             </div>
             <button type="button" class="place__delete"></button>
         </article>

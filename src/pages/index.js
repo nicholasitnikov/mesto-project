@@ -1,12 +1,21 @@
-import './index.css';
-import { initialCards } from '../components/initialCards.js';
-import { enableValidation } from '../components/validate.js';
-import { createPlace, renderPlace } from '../components/card.js';
-import { openPopupEditUser, closePopupEditUser, buttonEdit, buttonCloseEditUserPopup, formEditUser, updateUser } from '../components/modalEditUser.js';
-import { buttonPlaceAddition, buttonClosePlaceAdditionPopup, formPlaceAddition, openPopupAdditionPlace, closePopupAdditionPlace, submitAdditionForm } from '../components/modalAddPlace.js';
-import { buttonCloseImagePopup, closePopupImage } from '../components/modalImage.js';
-import { modals, closePopup } from '../components/modal.js';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
+import './index.css';
+import { enableValidation } from '../components/validate.js';
+import { createPlace, handleAddCard, renderPlace } from '../components/card.js';
+import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, buttonCloseEditUserPopup, formEditUser } from '../components/modalEditUser.js';
+import { buttonPlaceAddition, buttonClosePlaceAdditionPopup, formPlaceAddition, openPopupAdditionPlace, closePopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
+import { buttonCloseImagePopup, closePopupImage } from '../components/modalImage.js';
+import { modals, closePopup, updateSubmitText } from '../components/modal.js';
+import { loadCurrentProfile, profileAvatar, handleAvatarEdit, handleUpdateAvatar, handleUpdateProfile } from '../components/profile.js';
+import { getCards } from '../components/api.js';
+import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
+import { closePopupEditAvatar, formEditAvatar, popupEditAvatar } from "../components/modalEditAvatar.js";
+
+// Загрузка пользователя
+
+loadCurrentProfile();
 
 // Включение валидации
 
@@ -20,6 +29,15 @@ enableValidation({
 }); 
 
 enableValidation({
+    formSelector: '.form_type_editavatar',
+    inputSelector: '.popup__field',
+    submitButtonSelector: '.popup__button',
+    inputErrorClass: '.popup__field-error',
+    errorClass: 'popup__field-error_visible',
+    disableAfterSubmit: true
+}); 
+
+enableValidation({
     formSelector: '.form_type_addplace',
     inputSelector: '.popup__field',
     submitButtonSelector: '.popup__button',
@@ -28,10 +46,12 @@ enableValidation({
     disableAfterSubmit: true
 }); 
 
-// Добавление элементов по-умолчанию
+// Загрузка карточек
 
-initialCards.forEach((card, index) => {
-    renderPlace(createPlace(card.name, card.link), false);
+getCards().then(cards => {
+   cards.forEach(card => {
+    renderPlace(createPlace(card), false);
+   })
 })
 
 // Добавление обработчиков
@@ -39,9 +59,11 @@ initialCards.forEach((card, index) => {
 buttonEdit.addEventListener('click', openPopupEditUser);
 buttonCloseEditUserPopup.addEventListener('click', closePopupEditUser);
 
-formEditUser.addEventListener('submit', (e) => {
+formEditUser.addEventListener('submit', async (e) => {
     e.preventDefault();
-    updateUser();
+    updateSubmitText(popupEditUser, 'Сохранение...');
+    await handleUpdateProfile();
+    updateSubmitText(popupEditUser, 'Сохранить');
     closePopupEditUser();
 })
 
@@ -49,9 +71,11 @@ buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
 
 buttonClosePlaceAdditionPopup.addEventListener('click', closePopupAdditionPlace);
 
-formPlaceAddition.addEventListener('submit', (e) => {
+formPlaceAddition.addEventListener('submit', async (e) => {
     e.preventDefault();
-    submitAdditionForm();
+    updateSubmitText(popupPlaceAddition, 'Создание...');
+    await handleAddCard();
+    updateSubmitText(popupPlaceAddition, 'Создать');
     closePopupAdditionPlace();
 })
 
@@ -63,4 +87,16 @@ modals.forEach(modal => {
             closePopup(modal);
         }
     })
+})
+
+buttonPlaceRemove.addEventListener('click', handleRemovePlaceButton);
+
+profileAvatar.addEventListener('click', handleAvatarEdit)
+
+formEditAvatar.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    updateSubmitText(popupEditAvatar, 'Сохранение...');
+    await handleUpdateAvatar(e.target.elements.link.value);
+    updateSubmitText(popupEditAvatar, 'Сохранить');
+    closePopupEditAvatar();
 })

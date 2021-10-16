@@ -1,25 +1,80 @@
+import { createCard, addLike, removeLike } from './api.js';
 import { openPopupImage } from './modalImage.js';
+import { popupPlaceAddition } from './modalAddPlace.js';
+import { openPopupRemovePlace } from './modalRemovePlace.js';
 
 const places = document.querySelector('.places');
 const templatePlace = document.querySelector('#placeTemplate').content;
 
-export const removePlace = (e) => {
-    e.target.parentElement.remove();
+const fieldNamePlace = popupPlaceAddition.querySelector('.popup__field_name_placename');
+const fieldLinkPlace = popupPlaceAddition.querySelector('.popup__field_name_placelink');
+
+export const handlePlaceRemove = (id) => {
+    openPopupRemovePlace(id);
 }
 
-export const createPlace = (name, link) => {
+export const removePlaceElement = (id) => {
+    const places = document.querySelectorAll('.place');
+    places.forEach((place) => {
+        if(place.getAttribute('data-id') === id) {
+            place.remove();
+        }
+    })
+}
+
+const updateLikeElement = (element, card) => {
+    const userId = document.querySelector('.profile').getAttribute('data-id');
+    element.textContent = card.likes.length;
+    if(card.likes.find(like => like._id === userId)) {
+        element.classList.add('place__like_active');
+    } else {
+        element.classList.remove('place__like_active');
+    }
+}
+
+const updateCardLikes = (card) => {
+    const places = document.querySelectorAll('.place');
+    places.forEach((place) => {
+        if(place.getAttribute('data-id') === card._id) {
+            const buttonLikePlace = place.querySelector('.place__like');
+            updateLikeElement(buttonLikePlace, card);
+        }
+    })
+}
+
+const togglePlaceLike = async (isLiked, id) => {
+    const updatedCard = isLiked ? await removeLike(id) : await addLike(id);
+    updateCardLikes(updatedCard);
+}
+
+const handlePlaceLike = (e, id) => {
+    const isLiked = Array.from(e.target.classList).includes('place__like_active');
+    togglePlaceLike(isLiked, id);
+}
+
+export const createPlace = (card) => {
+
+    const userId = document.querySelector('.profile').getAttribute('data-id');
 
     const elementPlace = templatePlace.querySelector('.place').cloneNode(true);
+    const buttonRemovePlace = elementPlace.querySelector('.place__delete');
+    const buttonLikePlace = elementPlace.querySelector('.place__like');
 
-    elementPlace.querySelector('.place__image').style.backgroundImage = `url(${link})`;
-    elementPlace.querySelector('.place__heading').textContent = name;
+    elementPlace.setAttribute('data-id', card._id);
 
-    elementPlace.querySelector('.place__like').addEventListener('click', (e) => {
-        e.target.classList.toggle('place__like_active')
-    })
+    elementPlace.querySelector('.place__image').style.backgroundImage = `url(${card.link})`;
+    elementPlace.querySelector('.place__heading').textContent = card.name;
+    updateLikeElement(buttonLikePlace, card);
 
-    elementPlace.querySelector('.place__delete').addEventListener('click', (e) => removePlace(e));
-    elementPlace.querySelector('.place__image').addEventListener('click', () => openPopupImage(name, link));
+    buttonLikePlace.addEventListener('click', (e) => handlePlaceLike(e, card._id));
+
+    if(card.owner._id === userId) {
+        buttonRemovePlace.addEventListener('click', () => handlePlaceRemove(card._id));
+    } else {
+        buttonRemovePlace.remove();
+    }
+
+    elementPlace.querySelector('.place__image').addEventListener('click', () => openPopupImage(card.name, card.link));
 
     return elementPlace;
 
@@ -32,4 +87,10 @@ export const renderPlace = (elementPlace, prepand) => {
         places.append(elementPlace);
     }
 
+}
+
+export const handleAddCard = async () => {
+    await createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
+        renderPlace(createPlace(card), true);
+    })
 }

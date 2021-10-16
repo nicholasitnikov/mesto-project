@@ -17,3 +17,8 @@ export const closePopup = (popup) => {
     popup.classList.remove('popup_opened');
     document.removeEventListener('keydown', handlePopupExit);
 }
+
+export const updateSubmitText = (popup, text) => {
+    const submitButton = popup.querySelector('.popup__button');
+    submitButton.textContent = text;
+}
