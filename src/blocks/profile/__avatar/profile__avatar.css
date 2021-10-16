@@ -4,7 +4,6 @@
     border-radius: 60px;
     flex-grow: 0;
     object-fit: cover;
-    overflow: hidden;
     position: relative;
     display: block;
     background-size: cover;
@@ -20,7 +19,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
+    border-radius: 60px;
     opacity: 0;
     pointer-events: none;
     transition: all .2s;
@@ -42,7 +41,6 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
     opacity: 0;
     pointer-events: none;
     transition: all .2s;

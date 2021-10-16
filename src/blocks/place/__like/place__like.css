@@ -13,6 +13,7 @@
     justify-content: center;
     align-items: flex-end;
     font-size: 13px;
+    color: black;
 }
 
 .place__like:hover {
