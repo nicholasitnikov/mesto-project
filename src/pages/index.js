@@ -10,8 +10,8 @@ import { buttonCloseImagePopup, closePopupImage } from '../components/modalImage
 import { modals, closePopup, updateSubmitText } from '../components/modal.js';
 import { loadCurrentProfile, profileAvatar, handleAvatarEdit, handleUpdateAvatar, handleUpdateProfile } from '../components/profile.js';
 import { getCards } from '../components/api.js';
-import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
-import { closePopupEditAvatar, formEditAvatar, popupEditAvatar } from "../components/modalEditAvatar.js";
+import { buttonClosePlaceRemovePopup, buttonPlaceRemove, closePopupRemovePlace, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
+import { closePopupEditAvatar, formEditAvatar, popupEditAvatar, buttonCloseEditAvatarPopup } from "../components/modalEditAvatar.js";
 
 // Загрузка пользователя
 
@@ -90,6 +90,7 @@ modals.forEach(modal => {
 })
 
 buttonPlaceRemove.addEventListener('click', handleRemovePlaceButton);
+buttonClosePlaceRemovePopup.addEventListener('click', closePopupRemovePlace);
 
 profileAvatar.addEventListener('click', handleAvatarEdit)
 
@@ -100,3 +101,5 @@ formEditAvatar.addEventListener('submit', async (e) => {
     updateSubmitText(popupEditAvatar, 'Сохранить');
     closePopupEditAvatar();
 })
+
+buttonCloseEditAvatarPopup.addEventListener('click', closePopupEditAvatar);

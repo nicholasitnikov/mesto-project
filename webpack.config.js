@@ -17,7 +17,7 @@ module.exports = {
         compress: true,
         port: 8080,
         open: true,
-        static: '/assets/',
+        static: path.resolve(__dirname, 'dist'),
         watchFiles: ['src/index.html']
     },
     experiments: {
