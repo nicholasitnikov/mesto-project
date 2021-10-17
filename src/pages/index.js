@@ -4,82 +4,68 @@ import "regenerator-runtime/runtime";
 import './index.css';
 import { enableValidation } from '../components/validate.js';
 import { createPlace, handleAddCard, renderPlace } from '../components/card.js';
-import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, buttonCloseEditUserPopup, formEditUser } from '../components/modalEditUser.js';
-import { buttonPlaceAddition, buttonClosePlaceAdditionPopup, formPlaceAddition, openPopupAdditionPlace, closePopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
-import { buttonCloseImagePopup, closePopupImage } from '../components/modalImage.js';
+import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, formEditUser } from '../components/modalEditUser.js';
+import { buttonPlaceAddition, formPlaceAddition, closePopupAdditionPlace, openPopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
 import { modals, closePopup, updateSubmitText } from '../components/modal.js';
 import { loadCurrentProfile, profileAvatar, handleAvatarEdit, handleUpdateAvatar, handleUpdateProfile } from '../components/profile.js';
 import { getCards } from '../components/api.js';
-import { buttonClosePlaceRemovePopup, buttonPlaceRemove, closePopupRemovePlace, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
-import { closePopupEditAvatar, formEditAvatar, popupEditAvatar, buttonCloseEditAvatarPopup } from "../components/modalEditAvatar.js";
-
-// Загрузка пользователя
-
-loadCurrentProfile();
+import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
+import { formEditAvatar, popupEditAvatar, closePopupEditAvatar } from "../components/modalEditAvatar.js";
 
 // Включение валидации
 
 enableValidation({
-    formSelector: '.form_type_useredit',
+    formSelector: '.form',
     inputSelector: '.popup__field',
     submitButtonSelector: '.popup__button',
     inputErrorClass: '.popup__field-error',
-    errorClass: 'popup__field-error_visible',
-    disableAfterSubmit: false
-}); 
+    errorClass: 'popup__field-error_visible'
+});
 
-enableValidation({
-    formSelector: '.form_type_editavatar',
-    inputSelector: '.popup__field',
-    submitButtonSelector: '.popup__button',
-    inputErrorClass: '.popup__field-error',
-    errorClass: 'popup__field-error_visible',
-    disableAfterSubmit: true
-}); 
+// Загрузка карточек и данных пользователя
 
-enableValidation({
-    formSelector: '.form_type_addplace',
-    inputSelector: '.popup__field',
-    submitButtonSelector: '.popup__button',
-    inputErrorClass: '.popup__field-error',
-    errorClass: 'popup__field-error_visible',
-    disableAfterSubmit: true
-}); 
+Promise.all([getCards(), loadCurrentProfile()]).then(([cards, _]) => {
+    cards.forEach(card => {
+     renderPlace(createPlace(card), false);
+    })
+ }).catch(err => {
+     console.log(err);
+ })
 
-// Загрузка карточек
-
-getCards().then(cards => {
-   cards.forEach(card => {
-    renderPlace(createPlace(card), false);
-   })
-})
 
 // Добавление обработчиков
 
 buttonEdit.addEventListener('click', openPopupEditUser);
-buttonCloseEditUserPopup.addEventListener('click', closePopupEditUser);
 
 formEditUser.addEventListener('submit', async (e) => {
     e.preventDefault();
     updateSubmitText(popupEditUser, 'Сохранение...');
-    await handleUpdateProfile();
-    updateSubmitText(popupEditUser, 'Сохранить');
-    closePopupEditUser();
+    try {
+        await handleUpdateProfile();
+    } catch (err) {
+        console.log(err);
+        updateSubmitText(popupEditUser, 'Ошибка');
+    } finally {
+        updateSubmitText(popupEditUser, 'Сохранить');
+        closePopupEditUser();
+    }
 })
 
 buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
 
-buttonClosePlaceAdditionPopup.addEventListener('click', closePopupAdditionPlace);
-
 formPlaceAddition.addEventListener('submit', async (e) => {
     e.preventDefault();
     updateSubmitText(popupPlaceAddition, 'Создание...');
-    await handleAddCard();
-    updateSubmitText(popupPlaceAddition, 'Создать');
-    closePopupAdditionPlace();
+    try {
+        await handleAddCard();
+    } catch (err) {
+        console.log(err);
+        updateSubmitText(popupPlaceAddition, 'Ошибка');
+    } finally {
+        updateSubmitText(popupPlaceAddition, 'Создать');
+        closePopupAdditionPlace();
+    }
 })
-
-buttonCloseImagePopup.addEventListener('click', closePopupImage);
 
 modals.forEach(modal => {
     modal.addEventListener('click', (e) => {
@@ -90,16 +76,32 @@ modals.forEach(modal => {
 })
 
 buttonPlaceRemove.addEventListener('click', handleRemovePlaceButton);
-buttonClosePlaceRemovePopup.addEventListener('click', closePopupRemovePlace);
 
 profileAvatar.addEventListener('click', handleAvatarEdit)
 
 formEditAvatar.addEventListener('submit', async (e) => {
     e.preventDefault();
     updateSubmitText(popupEditAvatar, 'Сохранение...');
-    await handleUpdateAvatar(e.target.elements.link.value);
-    updateSubmitText(popupEditAvatar, 'Сохранить');
-    closePopupEditAvatar();
+    try {
+        await handleUpdateAvatar(e.target.elements.link.value);
+    } catch (err) {
+        updateSubmitText(popupEditAvatar, 'Ошибка');
+        console.log(err);
+    } finally {
+        updateSubmitText(popupEditAvatar, 'Сохранить');
+        closePopupEditAvatar();
+    }
 })
 
-buttonCloseEditAvatarPopup.addEventListener('click', closePopupEditAvatar);
+const popups = document.querySelectorAll('.popup')
+
+popups.forEach((popup) => {
+    popup.addEventListener('click', (evt) => {
+        if (evt.target.classList.contains('popup_opened')) {
+            closePopup(popup)
+        }
+        if (evt.target.classList.contains('popup__close')) {
+          closePopup(popup)
+        }
+    })
+})

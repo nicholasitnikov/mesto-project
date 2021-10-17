@@ -14,12 +14,8 @@ export const handlePlaceRemove = (id) => {
 }
 
 export const removePlaceElement = (id) => {
-    const places = document.querySelectorAll('.place');
-    places.forEach((place) => {
-        if(place.getAttribute('data-id') === id) {
-            place.remove();
-        }
-    })
+    const place = document.querySelector(`.place[data-id="${id}"]`);
+    place.remove();
 }
 
 const updateLikeElement = (element, card) => {
@@ -33,18 +29,18 @@ const updateLikeElement = (element, card) => {
 }
 
 const updateCardLikes = (card) => {
-    const places = document.querySelectorAll('.place');
-    places.forEach((place) => {
-        if(place.getAttribute('data-id') === card._id) {
-            const buttonLikePlace = place.querySelector('.place__like');
-            updateLikeElement(buttonLikePlace, card);
-        }
-    })
+    const place = document.querySelector(`.place[data-id="${card._id}"]`);
+    const buttonLikePlace = place.querySelector('.place__like');
+    updateLikeElement(buttonLikePlace, card);
 }
 
 const togglePlaceLike = async (isLiked, id) => {
-    const updatedCard = isLiked ? await removeLike(id) : await addLike(id);
-    updateCardLikes(updatedCard);
+    try {
+        const updatedCard = isLiked ? await removeLike(id) : await addLike(id);
+        updateCardLikes(updatedCard);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 const handlePlaceLike = (e, id) => {
@@ -92,5 +88,7 @@ export const renderPlace = (elementPlace, prepand) => {
 export const handleAddCard = async () => {
     await createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
         renderPlace(createPlace(card), true);
+    }).catch(err => {
+        console.log(err);
     })
 }

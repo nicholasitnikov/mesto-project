@@ -31,7 +31,7 @@
         <div class="popup popup_role_edit">
             <div class="popup__container">
                 <h2 class="popup__heading">Редактировать профиль</h2>
-                <form name="userEditForm" class="form_type_useredit" action="/" novalidate>
+                <form name="userEditForm" class="form form_type_useredit" action="/" novalidate>
                     <input autocomplete="off" id="username" type="text" minlength="2" maxlength="40" name="username" class="popup__field popup__field_name_username" type="text" placeholder="Имя" required>
                     <span class="popup__field-error-username popup__field-error">Ошибка</span>
                     <input autocomplete="off" id="description" type="text" minlength="2" maxlength="200" name="description" class="popup__field popup__field_name_description" type="text" placeholder="Описание" required>
@@ -44,7 +44,7 @@
         <div class="popup popup_role_add">
             <div class="popup__container">
                 <h2 class="popup__heading">Новое место</h2>
-                <form name="addPlaceForm" class="form_type_addplace" action="/">
+                <form name="addPlaceForm" class="form form_type_addplace" action="/">
                     <input autocomplete="off" type="text" minlength="2" maxlength="30" id="name" name="name" class="popup__field popup__field_name_placename" type="text" placeholder="Название" required>
                     <span class="popup__field-error-name popup__field-error popup__field-error_hidden">Ошибка</span>
                     <input autocomplete="off" type="url" id="link" name="link" class="popup__field popup__field_name_placelink" type="text" placeholder="Ссылка на картинку" required>
@@ -73,7 +73,7 @@
         <div class="popup popup_role_edit-avatar">
             <div class="popup__container">
                 <h2 class="popup__heading">Обновить аватар</h2>
-                <form name="editAvatarForm" class="form_type_editavatar" action="/">
+                <form name="editAvatarForm" class="form form_type_editavatar" action="/">
                     <input autocomplete="off" type="url" id="link" name="link" class="popup__field popup__field_name_edit-avatar" type="text" placeholder="Ссылка на картинку" required>
                     <span class="popup__field-error-link popup__field-error popup__field-error_hidden">Ошибка</span>
                     <button class="popup__button" type="submit" disabled>Сохранить</button>

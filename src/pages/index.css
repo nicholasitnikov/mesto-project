@@ -35,6 +35,7 @@
 @import url('../blocks/popup/__heading/popup__heading.css');
 @import url('../blocks/popup/__heading/_small-offset/popup__heading__small-offset.css');
 @import url('../blocks/popup/__field/popup__field.css');
+@import url('../blocks/popup/__field/_empty/popup__field_empty.css');
 @import url('../blocks/popup/__field-error/popup__field-error.css');
 @import url('../blocks/popup/__field-error/_visible/popup__field-error_visible.css');
 @import url('../blocks/popup/__button/popup__button.css');

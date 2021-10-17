@@ -12,8 +12,12 @@ export const handleAvatarEdit = () => {
 }
 
 export const handleUpdateAvatar = async (url) => {
-    const updatedUser = await updateAvatar(url);
-    updateProfileElements(updatedUser);
+    try {
+        const updatedUser = await updateAvatar(url);
+        updateProfileElements(updatedUser);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 const updateProfileElements = (user) => {
@@ -24,8 +28,12 @@ const updateProfileElements = (user) => {
 }
 
 export const loadCurrentProfile = async () => {
-    const user = await getUser();
-    updateProfileElements(user);
+    try {
+        const user = await getUser();
+        updateProfileElements(user);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export const handleUpdateProfile = async () => {
@@ -35,7 +43,12 @@ export const handleUpdateProfile = async () => {
         description: fieldDescriptionProfile.value
     };
     
-    const updatedUser = await updateUser(user);
-    updateProfileElements(updatedUser);
+    try {
+        const updatedUser = await updateUser(user); 
+        updateProfileElements(updatedUser);
+    } catch (err) {
+        console.log(err);
+    }
+    
 
 }

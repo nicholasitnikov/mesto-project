@@ -160,7 +160,6 @@ export const addLike = async (id) => {
 }
 
 export const updateAvatar = async (url) => {
-  console.log(url)
   return new Promise((resolve, reject) => {
     fetch(`https://nomoreparties.co/v1/${config.groupId}/users/me/avatar `, {
       method: 'PATCH',

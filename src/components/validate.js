@@ -42,11 +42,17 @@ const updateSubmit = (form, formInputs, options) => {
     }
 }
 
+const checkIsEmpty = (input) => {
+    if(input.value === '') {
+        input.classList.add('popup__field_empty');
+    }
+}
+
 const setInputsEventListeners = (form, options) => {
 
     const formInputs = form.querySelectorAll(options.inputSelector);
     formInputs.forEach(input => {
-
+        checkIsEmpty(input);
         input.addEventListener('input', () => {
             isValid(form, input, options);
             updateSubmit(form, formInputs, options);
@@ -57,20 +63,14 @@ const setInputsEventListeners = (form, options) => {
 }
 
 const setEventListeners = (form, options) => {
-    
     setInputsEventListeners(form, options);
-
-    form.addEventListener('submit', () => {
-        if(options.disableAfterSubmit) {
-            disableSubmit(form, options);
-        }
-    })
-
 }
 
 export const enableValidation = (options) => {
 
-    const form = document.querySelector(options.formSelector);
-    setEventListeners(form, options);
-
+    const forms = document.querySelectorAll(options.formSelector);
+    forms.forEach(form => {
+        setEventListeners(form, options);
+    })
+    
 }

@@ -17,9 +17,14 @@ export const closePopupRemovePlace = () => {
 
 export const handleRemovePlaceButton = async (e) => {
     const cardId = e.target.getAttribute('data-id');
-    const removedCard = await removeCard(cardId);
-    closePopupRemovePlace();
-    if(removedCard) {
-        removePlaceElement(cardId);
+    try {
+        const removedCard = await removeCard(cardId);
+        if(removedCard) {
+            removePlaceElement(cardId);
+        }
+    } catch (err) {
+        console.log(err);
+    } finally {
+        closePopupRemovePlace();
     }
 }
