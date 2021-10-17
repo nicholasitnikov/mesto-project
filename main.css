@@ -29,6 +29,7 @@
 .popup__heading{font-size:24px;font-weight:900;line-height:29px;margin:0;padding:0 0 48px}@media screen and (max-width:590px){.popup__heading{font-size:18px;line-height:22px;padding:0 0 75px}}
 .popup__heading__small-offset{padding-bottom:33px}
 .popup__field{border:none;border-bottom:1px solid rgba(0,0,0,.2);display:block;font-size:14px;font-weight:400;line-height:17px;margin:0;outline:none;padding:0 0 9px;width:358px}.popup__field:invalid{border-color:red}@media screen and (max-width:450px){.popup__field{width:100%}}
+.popup__field_empty{border-color:rgba(0,0,0,.2)!important}
 .popup__field-error{color:red;display:block;font-size:12px;font-weight:400;letter-spacing:0;line-height:15px;max-width:358px;min-height:35px;opacity:0;padding-top:5px;pointer-events:none;text-align:left;transition:opacity .3s}@media screen and (max-width:450px){.popup__field-error{max-width:100%}}
 .popup__field-error_visible{opacity:1}
 .popup__button{background:#000;border:none;border-radius:2px;color:#fff;cursor:pointer;font-size:18px;font-weight:400;line-height:22px;margin-top:5px;padding:15px 0 13px;transition:opacity .3s ease-out;width:358px}.popup__button:hover{opacity:.8}.popup__button:disabled{background:transparent;border:1px solid rgba(0,0,0,.2);color:rgba(0,0,0,.2)}@media screen and (max-width:590px){.popup__button{font-size:14px;line-height:17px;margin-top:45px;padding:14px 0}}@media screen and (max-width:450px){.popup__button{width:100%}}
