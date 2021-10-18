@@ -22,9 +22,8 @@ export const handleRemovePlaceButton = async (e) => {
         if(removedCard) {
             removePlaceElement(cardId);
         }
+        closePopupRemovePlace();
     } catch (err) {
         console.log(err);
-    } finally {
-        closePopupRemovePlace();
     }
 }

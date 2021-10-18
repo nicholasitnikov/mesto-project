@@ -40,15 +40,13 @@ buttonEdit.addEventListener('click', openPopupEditUser);
 formEditUser.addEventListener('submit', async (e) => {
     e.preventDefault();
     updateSubmitText(popupEditUser, 'Сохранение...');
-    try {
-        await handleUpdateProfile();
-    } catch (err) {
-        console.log(err);
-        updateSubmitText(popupEditUser, 'Ошибка');
-    } finally {
+    await handleUpdateProfile().then(res => {
         updateSubmitText(popupEditUser, 'Сохранить');
         closePopupEditUser();
-    }
+    }).catch(err => {
+        console.log(err);
+        updateSubmitText(popupEditUser, 'Ошибка');
+    })
 })
 
 buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
@@ -56,15 +54,13 @@ buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
 formPlaceAddition.addEventListener('submit', async (e) => {
     e.preventDefault();
     updateSubmitText(popupPlaceAddition, 'Создание...');
-    try {
-        await handleAddCard();
-    } catch (err) {
-        console.log(err);
-        updateSubmitText(popupPlaceAddition, 'Ошибка');
-    } finally {
+    handleAddCard().then(res => {
         updateSubmitText(popupPlaceAddition, 'Создать');
         closePopupAdditionPlace();
-    }
+    }).catch(err => {
+        console.log(err);
+        updateSubmitText(popupPlaceAddition, 'Ошибка');
+    })
 })
 
 modals.forEach(modal => {
@@ -82,15 +78,13 @@ profileAvatar.addEventListener('click', handleAvatarEdit)
 formEditAvatar.addEventListener('submit', async (e) => {
     e.preventDefault();
     updateSubmitText(popupEditAvatar, 'Сохранение...');
-    try {
-        await handleUpdateAvatar(e.target.elements.link.value);
-    } catch (err) {
-        updateSubmitText(popupEditAvatar, 'Ошибка');
-        console.log(err);
-    } finally {
+    await handleUpdateAvatar(e.target.elements.link.value).then(res => {
         updateSubmitText(popupEditAvatar, 'Сохранить');
         closePopupEditAvatar();
-    }
+    }).catch(err => {
+        updateSubmitText(popupEditAvatar, 'Ошибка');
+        console.log(err);
+    })
 })
 
 const popups = document.querySelectorAll('.popup')
