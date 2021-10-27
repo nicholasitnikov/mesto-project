@@ -8,9 +8,9 @@ import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, formE
 import { buttonPlaceAddition, formPlaceAddition, closePopupAdditionPlace, openPopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
 import { modals, closePopup, updateSubmitText } from '../components/modal.js';
 import { loadCurrentProfile, profileAvatar, handleAvatarEdit, handleUpdateAvatar, handleUpdateProfile } from '../components/profile.js';
-import { getCards } from '../components/api.js';
 import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
 import { formEditAvatar, popupEditAvatar, closePopupEditAvatar } from "../components/modalEditAvatar.js";
+import { api } from '../components/api.js';
 
 // Включение валидации
 
@@ -24,7 +24,7 @@ enableValidation({
 
 // Загрузка карточек и данных пользователя
 
-Promise.all([getCards(), loadCurrentProfile()]).then(([cards, _]) => {
+Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, _]) => {
     cards.forEach(card => {
      renderPlace(createPlace(card), false);
     })

@@ -1,4 +1,4 @@
-import { getUser, updateAvatar, updateUser } from './api.js';
+import { api } from '../components/api.js';
 import { openPopupEditAvatar } from './modalEditAvatar.js';
 import { fieldNameProfile, fieldDescriptionProfile } from './modalEditUser.js';
 
@@ -13,7 +13,7 @@ export const handleAvatarEdit = () => {
 
 export const handleUpdateAvatar = async (url) => {
     try {
-        const updatedUser = await updateAvatar(url);
+        const updatedUser = await api.updateAvatar(url);
         updateProfileElements(updatedUser);
     } catch (err) {
         console.log(err);
@@ -29,7 +29,7 @@ const updateProfileElements = (user) => {
 
 export const loadCurrentProfile = async () => {
     try {
-        const user = await getUser();
+        const user = await api.getUser();
         updateProfileElements(user);
     } catch (err) {
         console.log(err);
@@ -44,7 +44,7 @@ export const handleUpdateProfile = async () => {
     };
     
     try {
-        const updatedUser = await updateUser(user); 
+        const updatedUser = await api.updateUser(user); 
         updateProfileElements(updatedUser);
     } catch (err) {
         console.log(err);

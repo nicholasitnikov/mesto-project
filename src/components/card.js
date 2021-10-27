@@ -2,6 +2,7 @@ import { createCard, addLike, removeLike } from './api.js';
 import { openPopupImage } from './modalImage.js';
 import { popupPlaceAddition } from './modalAddPlace.js';
 import { openPopupRemovePlace } from './modalRemovePlace.js';
+import { api } from './api.js';
 
 const places = document.querySelector('.places');
 const templatePlace = document.querySelector('#placeTemplate').content;
@@ -36,7 +37,7 @@ const updateCardLikes = (card) => {
 
 const togglePlaceLike = async (isLiked, id) => {
     try {
-        const updatedCard = isLiked ? await removeLike(id) : await addLike(id);
+        const updatedCard = isLiked ? await api.removeLike(id) : await api.addLike(id);
         updateCardLikes(updatedCard);
     } catch (err) {
         console.log(err);
@@ -86,7 +87,7 @@ export const renderPlace = (elementPlace, prepand) => {
 }
 
 export const handleAddCard = async () => {
-    await createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
+    await api.createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
         renderPlace(createPlace(card), true);
     }).catch(err => {
         console.log(err);
