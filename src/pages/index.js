@@ -2,7 +2,7 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 
 import './index.css';
-import { enableValidation } from '../components/validate.js';
+import FormValidator from '../components/validate.js';
 import { createPlace, handleAddCard, renderPlace } from '../components/card.js';
 import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, formEditUser } from '../components/modalEditUser.js';
 import { buttonPlaceAddition, formPlaceAddition, closePopupAdditionPlace, openPopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
@@ -14,13 +14,20 @@ import { api } from '../components/api.js';
 
 // Включение валидации
 
-enableValidation({
-    formSelector: '.form',
+const validationOptions = {
     inputSelector: '.popup__field',
     submitButtonSelector: '.popup__button',
     inputErrorClass: '.popup__field-error',
     errorClass: 'popup__field-error_visible'
-});
+}
+
+const userEditFormValidator = new FormValidator (validationOptions, document.forms.userEditForm);
+const avatarEditFormValidator = new FormValidator (validationOptions, document.forms.editAvatarForm);
+const cardEditFormValidator = new FormValidator (validationOptions, document.forms.addPlaceForm);
+cardEditFormValidator.enableValidation();
+avatarEditFormValidator.enableValidation();
+userEditFormValidator.enableValidation();
+
 
 // Загрузка карточек и данных пользователя
 
