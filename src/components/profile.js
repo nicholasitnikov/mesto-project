@@ -31,6 +31,7 @@ export const loadCurrentProfile = async () => {
     try {
         const user = await api.getUser();
         updateProfileElements(user);
+        return user;
     } catch (err) {
         console.log(err);
     }

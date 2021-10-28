@@ -1,5 +1,5 @@
 import { openPopup, closePopup } from "./modal.js";
-import { removePlaceElement } from "./card.js";
+// import { removePlaceElement } from "./card.js";
 import { api } from './api.js';
 
 export const popupPlaceRemove = document.querySelector('.popup_role_remove');
@@ -20,7 +20,7 @@ export const handleRemovePlaceButton = async (e) => {
     try {
         const removedCard = await api.removeCard(cardId);
         if(removedCard) {
-            removePlaceElement(cardId);
+            // removePlaceElement(cardId);
         }
     } catch (err) {
         console.log(err);

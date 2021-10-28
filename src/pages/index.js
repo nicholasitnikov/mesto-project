@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime";
 
 import './index.css';
 import FormValidator from '../components/validate.js';
-import { createPlace, handleAddCard, renderPlace } from '../components/card.js';
+import Card, { handleAddCard } from '../components/card.js';
 import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, formEditUser } from '../components/modalEditUser.js';
 import { buttonPlaceAddition, formPlaceAddition, closePopupAdditionPlace, openPopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
 import { modals, closePopup, updateSubmitText } from '../components/modal.js';
@@ -31,9 +31,24 @@ userEditFormValidator.enableValidation();
 
 // Загрузка карточек и данных пользователя
 
-Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, _]) => {
+Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, user]) => {
+    const places = document.querySelector('.places');
     cards.forEach(card => {
-     renderPlace(createPlace(card), false);
+        const newCard = new Card({
+            card, 
+            user, 
+            cardSelector: '#placeTemplate',
+            handleRemove: function() {
+                console.log(this)
+            },
+            handleImage: function() {
+                console.log(this)
+            }
+            
+        });
+        const cardElement = newCard.getElement();
+        places.append(cardElement);
+
     })
  }).catch(err => {
      console.log(err);
