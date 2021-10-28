@@ -27,7 +27,6 @@ export default class Card {
     }
 
     _updateLikeElement() {
-
         this._buttonLikePlace.textContent = this._likes.length;
         if(this._likes.find(like => like._id === this._user._id)) {
             this._buttonLikePlace.classList.add('place__like_active');
@@ -51,17 +50,14 @@ export default class Card {
         this._togglePlaceLike(isLiked);
     }
 
-    _setEventListeners() {
-        
+    _setEventListeners() {        
         this._buttonLikePlace.addEventListener('click', (e) => this._handlePlaceLike(e));
-        if(this._owner === this._user._id) {
+        if(this._owner._id === this._user._id) {
             this._buttonRemovePlace.addEventListener('click', this._handleRemove);
         } else {
             this._buttonRemovePlace.remove();
         }
-
         this._imagePlace.addEventListener('click', () => this._handleImage());
-
     }
 
     getElement() {
@@ -80,25 +76,4 @@ export default class Card {
 
 }
 
-// const places = document.querySelector('.places');
-// const templatePlace = document.querySelector('#placeTemplate').content;
 
-const fieldNamePlace = popupPlaceAddition.querySelector('.popup__field_name_placename');
-const fieldLinkPlace = popupPlaceAddition.querySelector('.popup__field_name_placelink');
-
-// export const renderPlace = (elementPlace, prepand) => {
-//     if(prepand) {
-//         places.prepend(elementPlace);
-//     } else {
-//         places.append(elementPlace);
-//     }
-
-// }
-
-export const handleAddCard = async () => {
-    await api.createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
-        
-    }).catch(err => {
-        console.log(err);
-    })
-}

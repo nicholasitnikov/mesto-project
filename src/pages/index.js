@@ -1,6 +1,5 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-
 import './index.css';
 import FormValidator from '../components/validate.js';
 import Card, { handleAddCard } from '../components/card.js';
@@ -11,6 +10,7 @@ import { loadCurrentProfile, profileAvatar, handleAvatarEdit, handleUpdateAvatar
 import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
 import { formEditAvatar, popupEditAvatar, closePopupEditAvatar } from "../components/modalEditAvatar.js";
 import { api } from '../components/api.js';
+import Section from '../components/section.js';
 
 // Включение валидации
 
@@ -28,28 +28,32 @@ cardEditFormValidator.enableValidation();
 avatarEditFormValidator.enableValidation();
 userEditFormValidator.enableValidation();
 
+const cardRenderer= (card, user) => {
+    console.log(user);
+    const newCard = new Card({
+        card, 
+        user, 
+        cardSelector: '#placeTemplate',
+        handleRemove: function() {
+            console.log(this)
+        },
+        handleImage: function() {
+            console.log(this)
+        }                
+    });
+    const cardElement = newCard.getElement();
+    return cardElement;
+}
 
 // Загрузка карточек и данных пользователя
 
 Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, user]) => {
-    const places = document.querySelector('.places');
-    cards.forEach(card => {
-        const newCard = new Card({
-            card, 
-            user, 
-            cardSelector: '#placeTemplate',
-            handleRemove: function() {
-                console.log(this)
-            },
-            handleImage: function() {
-                console.log(this)
-            }
-            
-        });
-        const cardElement = newCard.getElement();
-        places.append(cardElement);
-
-    })
+    console.log(user);
+    const placesSection = new Section({
+        items: cards,
+        renderer: (card) => cardRenderer(card, user)
+    },'.places')
+    placesSection.addAllItems();    
  }).catch(err => {
      console.log(err);
  })
@@ -76,17 +80,23 @@ formEditUser.addEventListener('submit', async (e) => {
 buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
 
 formPlaceAddition.addEventListener('submit', async (e) => {
+    const fieldNamePlace = popupPlaceAddition.querySelector('.popup__field_name_placename');
+    const fieldLinkPlace = popupPlaceAddition.querySelector('.popup__field_name_placelink');
     e.preventDefault();
     updateSubmitText(popupPlaceAddition, 'Создание...');
-    try {
-        await handleAddCard();
-    } catch (err) {
-        console.log(err);
-        updateSubmitText(popupPlaceAddition, 'Ошибка');
-    } finally {
+    api.createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
+        const placesSection = new Section({
+            items: [card],
+            renderer: (card) => cardRenderer(card, card.owner)
+        },'.places')
+        placesSection.addItem();
         updateSubmitText(popupPlaceAddition, 'Создать');
         closePopupAdditionPlace();
-    }
+        
+    }).catch(err => {
+        console.log(err);
+        updateSubmitText(popupPlaceAddition, 'Ошибка');
+    })
 })
 
 modals.forEach(modal => {
