@@ -15,7 +15,7 @@ export default class Section {
 	}
 
 	addItem(item) {
-		this._items.push(item);
+		this._items.unshift(item);
 	}
 
 	render() {

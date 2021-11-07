@@ -42,6 +42,7 @@ class Api {
 
   updateUser(user) {
     return new Promise((resolve, reject) => {
+      
       fetch(`${this._apiURL}/${this._groupId}/users/me`, {
         method: 'PATCH',
         headers: {
@@ -49,7 +50,7 @@ class Api {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: user.name,
+          name: user.username,
           about: user.description
         })
       })

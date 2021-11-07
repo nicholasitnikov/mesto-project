@@ -66,6 +66,7 @@ Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, user]) =
 
 const additionPopup = new PopupWithForm({
     selector: '.popup_role_add',
+    openButtonSelector: '.profile__add-place',
     submitHandler: function(data) {
         this.updateSubmitText('Создание...');
         api.createCard(data.name, data.link).then(card => {
@@ -83,7 +84,7 @@ const additionPopup = new PopupWithForm({
 });
 
 additionPopup.setEventListeners();
-buttonPlaceAddition.addEventListener('click', () => additionPopup.open());
+// buttonPlaceAddition.addEventListener('click', () => additionPopup.open());
 
 const removingPopup = new PopupWithForm({
     selector: '.popup_role_remove',
@@ -102,6 +103,37 @@ const removingPopup = new PopupWithForm({
 })
 removingPopup.setEventListeners();
 
+const editProfilePopup = new PopupWithForm ({
+    selector: '.popup_role_edit',
+    openButtonSelector: '.profile__edit',
+    submitHandler: async function(user) {
+        this.updateSubmitText('Сохранение...');
+        await api.updateUser(user).then(() => {                      
+            this.updateSubmitText('Сохранить');
+            this.close();
+        }).catch(err => {
+            console.log(err);
+            this.updateSubmitText('Ошибка');
+        })        
+    }
+})
+editProfilePopup.setEventListeners();
+
+const editAvatarPopup = new PopupWithForm ({
+    selector: '.popup_role_edit-avatar',
+    openButtonSelector: '.profile__avatar',
+    submitHandler: async function({link}) {
+        this.updateSubmitText('Сохранение...');
+        await api.updateAvatar(link).then(() => {                      
+            this.updateSubmitText('Сохранить');
+            this.close();
+        }).catch(err => {
+            console.log(err);
+            this.updateSubmitText('Ошибка');
+        })        
+    }
+})
+editAvatarPopup.setEventListeners();
 // buttonEdit.addEventListener('click', openPopupEditUser);
 
 // formEditUser.addEventListener('submit', async (e) => {
