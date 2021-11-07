@@ -11,6 +11,7 @@ import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalR
 import { formEditAvatar, popupEditAvatar, closePopupEditAvatar } from "../components/modalEditAvatar.js";
 import { api } from '../components/api.js';
 import Section from '../components/section.js';
+import PopupWithForm from '../components/popupWithForm.js';
 
 // Включение валидации
 
@@ -28,17 +29,20 @@ cardEditFormValidator.enableValidation();
 avatarEditFormValidator.enableValidation();
 userEditFormValidator.enableValidation();
 
-const cardRenderer= (card, user) => {    
+let cardsSection;
+
+const cardRenderer = (card, user, section) => {
     const newCard = new Card({
         card, 
         user, 
         cardSelector: '#placeTemplate',
         handleRemove: function() {
-            // removeItem(card._id);
-            console.log(this)
+            removingPopup.card = newCard;
+            removingPopup.section = section;
+            removingPopup.open();
         },
         handleImage: function() {
-            console.log(this)
+            // console.log(this)
         }                
     });
     const cardElement = newCard.getElement();
@@ -48,92 +52,86 @@ const cardRenderer= (card, user) => {
 // Загрузка карточек и данных пользователя
 
 Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, user]) => {
-    console.log(user);
-    const placesSection = new Section({
+    cardsSection = new Section({
         items: cards,
-        renderer: (card) => cardRenderer(card, user)
+        itemSelector: '.place',
+        renderer: function(card) {
+            return cardRenderer(card, user, this)
+        }
     },'.places')
-    placesSection.addAllItems();    
+    cardsSection.render();    
  }).catch(err => {
      console.log(err);
  })
 
+const additionPopup = new PopupWithForm({
+    selector: '.popup_role_add',
+    submitHandler: function(data) {
+        this.updateSubmitText('Создание...');
+        api.createCard(data.name, data.link).then(card => {
 
-// Добавление обработчиков
+            cardsSection.addItem(card);
+            cardsSection.renderLast();
 
-buttonEdit.addEventListener('click', openPopupEditUser);
-
-formEditUser.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    updateSubmitText(popupEditUser, 'Сохранение...');
-    try {
-        await handleUpdateProfile();
-    } catch (err) {
-        console.log(err);
-        updateSubmitText(popupEditUser, 'Ошибка');
-    } finally {
-        updateSubmitText(popupEditUser, 'Сохранить');
-        closePopupEditUser();
+            this.updateSubmitText('Создать');
+            this.close();
+        }).catch(err => {
+            console.log(err);
+            this.updateSubmitText('Ошибка');
+        })
     }
-})
+});
 
-buttonPlaceAddition.addEventListener('click', openPopupAdditionPlace);
+additionPopup.setEventListeners();
+buttonPlaceAddition.addEventListener('click', () => additionPopup.open());
 
-formPlaceAddition.addEventListener('submit', async (e) => {
-    const fieldNamePlace = popupPlaceAddition.querySelector('.popup__field_name_placename');
-    const fieldLinkPlace = popupPlaceAddition.querySelector('.popup__field_name_placelink');
-    e.preventDefault();
-    updateSubmitText(popupPlaceAddition, 'Создание...');
-    api.createCard(fieldNamePlace.value, fieldLinkPlace.value).then(card => {
-        const placesSection = new Section({
-            items: [card],
-            renderer: (card) => cardRenderer(card, card.owner)
-        },'.places')
-        placesSection.addItem();
-        updateSubmitText(popupPlaceAddition, 'Создать');
-        closePopupAdditionPlace();
+const removingPopup = new PopupWithForm({
+    selector: '.popup_role_remove',
+    submitHandler: async function() {
+        this.updateSubmitText('Удаление...');
+        await api.removeCard(this.card._id).then(() => {
+            this.section.removeItem(this.card._id);
+            this.updateSubmitText('Да');
+            this.close();
+        }).catch(err => {
+            console.log(err);
+            this.updateSubmitText('Ошибка');
+        })
         
-    }).catch(err => {
-        console.log(err);
-        updateSubmitText(popupPlaceAddition, 'Ошибка');
-    })
-})
-
-modals.forEach(modal => {
-    modal.addEventListener('click', (e) => {
-        if(Array.from(e.target.classList).includes('popup')) {
-            closePopup(modal);
-        }
-    })
-})
-
-buttonPlaceRemove.addEventListener('click', handleRemovePlaceButton);
-
-profileAvatar.addEventListener('click', handleAvatarEdit)
-
-formEditAvatar.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    updateSubmitText(popupEditAvatar, 'Сохранение...');
-    try {
-        await handleUpdateAvatar(e.target.elements.link.value);
-    } catch (err) {
-        updateSubmitText(popupEditAvatar, 'Ошибка');
-        console.log(err);
-    } finally {
-        updateSubmitText(popupEditAvatar, 'Сохранить');
-        closePopupEditAvatar();
     }
 })
+removingPopup.setEventListeners();
 
-const popups = document.querySelectorAll('.popup')
+// buttonEdit.addEventListener('click', openPopupEditUser);
 
-popups.forEach((popup) => {
-    popup.addEventListener('click', (evt) => {
-        if (evt.target.classList.contains('popup_opened')) {
-            closePopup(popup)
-        }
-        if (evt.target.classList.contains('popup__close')) {
-          closePopup(popup)
-        }
-    })
-})
+// formEditUser.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+//     updateSubmitText(popupEditUser, 'Сохранение...');
+//     try {
+//         await handleUpdateProfile();
+//     } catch (err) {
+//         console.log(err);
+//         updateSubmitText(popupEditUser, 'Ошибка');
+//     } finally {
+//         updateSubmitText(popupEditUser, 'Сохранить');
+//         closePopupEditUser();
+//     }
+// })
+
+// buttonPlaceRemove.addEventListener('click', handleRemovePlaceButton);
+
+// profileAvatar.addEventListener('click', handleAvatarEdit)
+
+// formEditAvatar.addEventListener('submit', async (e) => {
+//     e.preventDefault();
+//     updateSubmitText(popupEditAvatar, 'Сохранение...');
+//     try {
+//         await handleUpdateAvatar(e.target.elements.link.value);
+//     } catch (err) {
+//         updateSubmitText(popupEditAvatar, 'Ошибка');
+//         console.log(err);
+//     } finally {
+//         updateSubmitText(popupEditAvatar, 'Сохранить');
+//         closePopupEditAvatar();
+//     }
+// })

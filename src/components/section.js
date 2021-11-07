@@ -1,34 +1,43 @@
 export default class Section {
-	constructor ( {items, renderer}, selectorContainer ) {
+	constructor ( {items, itemSelector, renderer}, selectorContainer ) {
 		this._renderer = renderer;
+		this._itemSelector = itemSelector;
 		this._items = items;
 		this._container = document.querySelector(selectorContainer);
 	}
 
-	_placeInto(prepand, item) {
-		if (prepand) {
+	_placeInto(item, prepand) {
+		if(prepand) {
 			this._container.prepend(item);
 		} else {
 			this._container.append(item);
 		}
 	}
 
-	addAllItems() {
+	addItem(item) {
+		this._items.push(item);
+	}
+
+	render() {
+		this._container.innerHTML = '';
 		this._items.forEach(item => {
 			const element = this._renderer(item);
-			this._placeInto(false, element);		
+			this._placeInto(element, false);		
 		});
 	}
 
-	addItem() {	
+	renderLast() {
 		const element = this._renderer(this._items[0]);
-		this._placeInto(true, element);		
-	}	
+		this._placeInto(element, true);	
+	}
 
 	removeItem(id) {
-		// this._items = this._items.filter((el) => {
-		// 	return el._id !== id;
-		// })
-		 console.log(this);
+		const items = document.querySelectorAll(this._itemSelector);
+		console.log(this._itemSelector)
+		items.forEach(el => {
+			if(el.getAttribute('data-id') === id) {
+				el.remove();
+			}
+		})
 	}
 }
