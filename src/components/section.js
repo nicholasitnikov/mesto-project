@@ -24,4 +24,11 @@ export default class Section {
 		const element = this._renderer(this._items[0]);
 		this._placeInto(true, element);		
 	}	
+
+	removeItem(id) {
+		// this._items = this._items.filter((el) => {
+		// 	return el._id !== id;
+		// })
+		 console.log(this);
+	}
 }

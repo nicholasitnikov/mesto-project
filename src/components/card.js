@@ -15,6 +15,7 @@ export default class Card {
         this._selector = cardSelector;
         this._handleRemove = handleRemove;
         this._handleImage = handleImage;
+        
     }
 
     _getTemplate() {
@@ -59,6 +60,7 @@ export default class Card {
         }
         this._imagePlace.addEventListener('click', () => this._handleImage());
     }
+    
 
     getElement() {
         this._element = this._getTemplate();
@@ -73,6 +75,8 @@ export default class Card {
         this._setEventListeners();
         return this._element;
     }
+
+    
 
 }
 

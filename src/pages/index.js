@@ -28,13 +28,13 @@ cardEditFormValidator.enableValidation();
 avatarEditFormValidator.enableValidation();
 userEditFormValidator.enableValidation();
 
-const cardRenderer= (card, user) => {
-    console.log(user);
+const cardRenderer= (card, user) => {    
     const newCard = new Card({
         card, 
         user, 
         cardSelector: '#placeTemplate',
         handleRemove: function() {
+            // removeItem(card._id);
             console.log(this)
         },
         handleImage: function() {
