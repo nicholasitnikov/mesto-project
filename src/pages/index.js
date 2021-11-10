@@ -2,18 +2,12 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import './index.css';
 import FormValidator from '../components/validate.js';
-import Card, { handleAddCard } from '../components/card.js';
-import { popupEditUser, openPopupEditUser, closePopupEditUser, buttonEdit, formEditUser } from '../components/modalEditUser.js';
-import { buttonPlaceAddition, formPlaceAddition, closePopupAdditionPlace, openPopupAdditionPlace, popupPlaceAddition } from '../components/modalAddPlace.js';
-import { modals, closePopup, updateSubmitText } from '../components/modal.js';
-import { loadCurrentProfile, profileAvatar, handleAvatarEdit, handleUpdateAvatar, handleUpdateProfile } from '../components/profile.js';
-import { buttonPlaceRemove, handleRemovePlaceButton } from '../components/modalRemovePlace.js';
-import { formEditAvatar, popupEditAvatar, closePopupEditAvatar } from "../components/modalEditAvatar.js";
 import { api } from '../components/api.js';
 import Section from '../components/section.js';
+import Card from '../components/card.js';
 import PopupWithForm from '../components/popupWithForm.js';
-import { popupImage } from "../components/modalImage";
 import PopupWithImage from '../components/popupWithImage.js';
+import UserInfo from "../components/userInfo";
 
 // Включение валидации
 
@@ -33,17 +27,17 @@ userEditFormValidator.enableValidation();
 
 let cardsSection;
 
+const userInfo = new UserInfo({
+    nameSelector: '.profile__heading',
+    aboutSelector: '.profile__description',
+    avatarSelector: '.profile__avatar'
+})
+
 const popupWithImage = new PopupWithImage ({
     selector:'.popup_role_image',
     imageSelector: '.popup__image'
 })
 popupWithImage.setEventListeners();
-
-const cardClickHandler = (e) => {
-    const imageSource = e.currentTarget.querySelector('.place__image').style.backgroundImage.replace('url("','').replace('")','');
-    const imageHeading = e.currentTarget.querySelector('.place__heading').textContent;
-    popupWithImage.open(imageSource, imageHeading);
-}
 
 const cardRenderer = (card, user, section) => {
     const newCard = new Card({
@@ -56,17 +50,17 @@ const cardRenderer = (card, user, section) => {
             removingPopup.open();            
         },
         handleImage: function() {
-            // console.log(this)
+            popupWithImage.open(this._link, this._name);
         }                
     });
     const cardElement = newCard.getElement();
-    cardElement.addEventListener('click', cardClickHandler)
     return cardElement;
 }
 
 // Загрузка карточек и данных пользователя
 
-Promise.all([api.getInitalCards(), loadCurrentProfile()]).then(([cards, user]) => {
+Promise.all([api.getInitalCards(), userInfo.getUserInfo()]).then(([cards, user]) => {
+    userInfo.setUserInfo()
     cardsSection = new Section({
         items: cards,
         itemSelector: '.place',
@@ -99,7 +93,6 @@ const additionPopup = new PopupWithForm({
 });
 
 additionPopup.setEventListeners();
-// buttonPlaceAddition.addEventListener('click', () => additionPopup.open());
 
 const removingPopup = new PopupWithForm({
     selector: '.popup_role_remove',
@@ -123,7 +116,9 @@ const editProfilePopup = new PopupWithForm ({
     openButtonSelector: '.profile__edit',
     submitHandler: async function(user) {
         this.updateSubmitText('Сохранение...');
-        await api.updateUser(user).then(() => {                      
+        await api.updateUser(user).then((user) => {   
+            userInfo.setData(user);   
+            userInfo.setUserInfo();                    
             this.updateSubmitText('Сохранить');
             this.close();
         }).catch(err => {
@@ -139,7 +134,9 @@ const editAvatarPopup = new PopupWithForm ({
     openButtonSelector: '.profile__avatar',
     submitHandler: async function({link}) {
         this.updateSubmitText('Сохранение...');
-        await api.updateAvatar(link).then(() => {                      
+        await api.updateAvatar(link).then((user) => {
+            userInfo.setData(user);   
+            userInfo.setUserInfo();                    
             this.updateSubmitText('Сохранить');
             this.close();
         }).catch(err => {
@@ -149,36 +146,3 @@ const editAvatarPopup = new PopupWithForm ({
     }
 })
 editAvatarPopup.setEventListeners();
-// buttonEdit.addEventListener('click', openPopupEditUser);
-
-// formEditUser.addEventListener('submit', async (e) => {
-//     e.preventDefault();
-//     updateSubmitText(popupEditUser, 'Сохранение...');
-//     try {
-//         await handleUpdateProfile();
-//     } catch (err) {
-//         console.log(err);
-//         updateSubmitText(popupEditUser, 'Ошибка');
-//     } finally {
-//         updateSubmitText(popupEditUser, 'Сохранить');
-//         closePopupEditUser();
-//     }
-// })
-
-// buttonPlaceRemove.addEventListener('click', handleRemovePlaceButton);
-
-// profileAvatar.addEventListener('click', handleAvatarEdit)
-
-// formEditAvatar.addEventListener('submit', async (e) => {
-//     e.preventDefault();
-//     updateSubmitText(popupEditAvatar, 'Сохранение...');
-//     try {
-//         await handleUpdateAvatar(e.target.elements.link.value);
-//     } catch (err) {
-//         updateSubmitText(popupEditAvatar, 'Ошибка');
-//         console.log(err);
-//     } finally {
-//         updateSubmitText(popupEditAvatar, 'Сохранить');
-//         closePopupEditAvatar();
-//     }
-// })

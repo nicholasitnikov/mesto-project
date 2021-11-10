@@ -1,7 +1,3 @@
-import { createCard, addLike, removeLike } from './api.js';
-import { openPopupImage } from './modalImage.js';
-import { popupPlaceAddition } from './modalAddPlace.js';
-import { openPopupRemovePlace } from './modalRemovePlace.js';
 import { api } from './api.js';
 
 export default class Card {
