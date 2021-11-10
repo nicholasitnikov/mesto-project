@@ -12,6 +12,8 @@ import { formEditAvatar, popupEditAvatar, closePopupEditAvatar } from "../compon
 import { api } from '../components/api.js';
 import Section from '../components/section.js';
 import PopupWithForm from '../components/popupWithForm.js';
+import { popupImage } from "../components/modalImage";
+import PopupWithImage from '../components/popupWithImage.js';
 
 // Включение валидации
 
@@ -31,6 +33,18 @@ userEditFormValidator.enableValidation();
 
 let cardsSection;
 
+const popupWithImage = new PopupWithImage ({
+    selector:'.popup_role_image',
+    imageSelector: '.popup__image'
+})
+popupWithImage.setEventListeners();
+
+const cardClickHandler = (e) => {
+    const imageSource = e.currentTarget.querySelector('.place__image').style.backgroundImage.replace('url("','').replace('")','');
+    const imageHeading = e.currentTarget.querySelector('.place__heading').textContent;
+    popupWithImage.open(imageSource, imageHeading);
+}
+
 const cardRenderer = (card, user, section) => {
     const newCard = new Card({
         card, 
@@ -39,13 +53,14 @@ const cardRenderer = (card, user, section) => {
         handleRemove: function() {
             removingPopup.card = newCard;
             removingPopup.section = section;
-            removingPopup.open();
+            removingPopup.open();            
         },
         handleImage: function() {
             // console.log(this)
         }                
     });
     const cardElement = newCard.getElement();
+    cardElement.addEventListener('click', cardClickHandler)
     return cardElement;
 }
 
