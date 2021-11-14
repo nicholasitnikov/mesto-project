@@ -15,7 +15,9 @@ export default class Section {
 	}
 
 	addItem(item) {
-		this._items.unshift(item);
+		const element = this._renderer(item);
+		this._placeInto(element, true);
+		
 	}
 
 	render() {
@@ -24,20 +26,10 @@ export default class Section {
 			const element = this._renderer(item);
 			this._placeInto(element, false);		
 		});
-	}
-
-	renderLast() {
-		const element = this._renderer(this._items[0]);
-		this._placeInto(element, true);	
-	}
+	}	
 
 	removeItem(id) {
-		const items = document.querySelectorAll(this._itemSelector);
-		console.log(this._itemSelector)
-		items.forEach(el => {
-			if(el.getAttribute('data-id') === id) {
-				el.remove();
-			}
-		})
+		const item = document.querySelector(`${this._itemSelector}[data-id="${id}"]`);	
+		item.remove();		
 	}
 }

@@ -1,17 +1,16 @@
-import { api } from './api.js';
-
 export default class UserInfo {
-    constructor({ nameSelector, aboutSelector, avatarSelector }) {
+    constructor({ nameSelector, aboutSelector, avatarSelector, api }) {
         this._nameElement = document.querySelector(nameSelector);
         this._aboutElement = document.querySelector(aboutSelector);
         this._avatarElement = document.querySelector(avatarSelector);
         this._name = '';
         this._about = '';
         this._avatar = '';
+        this._api = api;
     }
     async getUserInfo() {
         try {
-            const user = await api.getUser();
+            const user = await this._api.getUser();
             this.setData(user);
             return user;
         } catch (err) {

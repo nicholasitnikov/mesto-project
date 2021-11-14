@@ -1,7 +1,6 @@
-import { api } from './api.js';
-
 export default class Card {
-    constructor({ card, user, cardSelector, handleRemove, handleImage }) {
+    constructor({ card, user, cardSelector, handleRemove, handleImage, api }) {
+        this._api = api;
         this._id = card._id;
         this._name = card.name;
         this._link = card.link;
@@ -10,8 +9,7 @@ export default class Card {
         this._user = user;
         this._selector = cardSelector;
         this._handleRemove = handleRemove;
-        this._handleImage = handleImage;
-        
+        this._handleImage = handleImage;        
     }
 
     _getTemplate() {
@@ -34,7 +32,7 @@ export default class Card {
     
     async _togglePlaceLike (isLiked) {
         try {
-            const updatedCard = isLiked ? await api.removeLike(this._id) : await api.addLike(this._id);
+            const updatedCard = isLiked ? await this._api.removeLike(this._id) : await this._api.addLike(this._id);
             this._likes = updatedCard.likes;
             this._updateLikeElement();
         } catch (err) {

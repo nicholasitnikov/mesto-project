@@ -1,16 +1,22 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 import './index.css';
-import FormValidator from '../components/validate.js';
-import { api } from '../components/api.js';
-import Section from '../components/section.js';
-import Card from '../components/card.js';
-import PopupWithForm from '../components/popupWithForm.js';
-import PopupWithImage from '../components/popupWithImage.js';
-import UserInfo from "../components/userInfo";
+import FormValidator from '../components/FormValidator.js';
+import Api from '../components/Api.js';
+import Section from '../components/Section.js';
+import Card from '../components/Card.js';
+import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithImage from '../components/PopupWithImage.js';
+import UserInfo from "../components/UserInfo";
+import { constants } from "../utils/constants.js";
+
+const api = new Api({
+    accessToken: constants.accessToken,
+    groupId: constants.groupId,
+    apiURL: constants.apiURL
+})
 
 // Включение валидации
-
 const validationOptions = {
     inputSelector: '.popup__field',
     submitButtonSelector: '.popup__button',
@@ -28,6 +34,7 @@ userEditFormValidator.enableValidation();
 let cardsSection;
 
 const userInfo = new UserInfo({
+    api,
     nameSelector: '.profile__heading',
     aboutSelector: '.profile__description',
     avatarSelector: '.profile__avatar'
@@ -41,6 +48,7 @@ popupWithImage.setEventListeners();
 
 const cardRenderer = (card, user, section) => {
     const newCard = new Card({
+        api,
         card, 
         user, 
         cardSelector: '#placeTemplate',
@@ -80,8 +88,7 @@ const additionPopup = new PopupWithForm({
         this.updateSubmitText('Создание...');
         api.createCard(data.name, data.link).then(card => {
 
-            cardsSection.addItem(card);
-            cardsSection.renderLast();
+            cardsSection.addItem(card);            
 
             this.updateSubmitText('Создать');
             this.close();
