@@ -1,3 +1,5 @@
+import { constants } from "../utils/constants";
+
 export default class FormValidator {
     constructor (options, formElement) {
         this._form = formElement;
@@ -53,7 +55,7 @@ export default class FormValidator {
 
     _checkIsEmpty(input) {
         if(input.value === '') {
-            input.classList.add('popup__field_empty');
+            input.classList.add(constants.validation.fieldEpmty);
         }
     }
    

@@ -1,3 +1,5 @@
+import { constants } from "../utils/constants";
+
 export default class Card {
     constructor({ card, user, cardSelector, handleRemove, handleImage, api }) {
         this._api = api;
@@ -16,7 +18,7 @@ export default class Card {
         const element = document
         .querySelector(this._selector)
         .content
-        .querySelector('.place')
+        .querySelector(constants.template.templateSelector)
         .cloneNode(true);
         return element;
     }
@@ -24,9 +26,9 @@ export default class Card {
     _updateLikeElement() {
         this._buttonLikePlace.textContent = this._likes.length;
         if(this._likes.find(like => like._id === this._user._id)) {
-            this._buttonLikePlace.classList.add('place__like_active');
+            this._buttonLikePlace.classList.add(constants.buttonLike.buttonLikeAtive);
         } else {
-            this._buttonLikePlace.classList.remove('place__like_active');
+            this._buttonLikePlace.classList.remove(constants.buttonLike.buttonLikeAtive);
         }
     }
     
@@ -41,7 +43,7 @@ export default class Card {
     }
     
     _handlePlaceLike(e) {
-        const isLiked = Array.from(e.target.classList).includes('place__like_active');
+        const isLiked = Array.from(e.target.classList).includes(constants.buttonLike.buttonLikeAtive);
         this._togglePlaceLike(isLiked);
     }
 
@@ -58,13 +60,13 @@ export default class Card {
 
     getElement() {
         this._element = this._getTemplate();
-        this._buttonRemovePlace = this._element.querySelector('.place__delete');
-        this._buttonLikePlace = this._element.querySelector('.place__like');
-        this._imagePlace = this._element.querySelector('.place__image');
+        this._buttonRemovePlace = this._element.querySelector(constants.elementSelector.buttonDelete);
+        this._buttonLikePlace = this._element.querySelector(constants.elementSelector.buttonLike);
+        this._imagePlace = this._element.querySelector(constants.elementSelector.buttonImage);
 
         this._element.setAttribute('data-id', this._id);
         this._imagePlace.style.backgroundImage = `url(${this._link})`;
-        this._element.querySelector('.place__heading').textContent = this._name;
+        this._element.querySelector(constants.elementSelector.placeHeading).textContent = this._name;
         this._updateLikeElement();
         this._setEventListeners();
         return this._element;

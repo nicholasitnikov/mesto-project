@@ -23,14 +23,14 @@ let cardsSection;
 
 const userInfo = new UserInfo({
     api,
-    nameSelector: '.profile__heading',
-    aboutSelector: '.profile__description',
-    avatarSelector: '.profile__avatar'
+    nameSelector: constants.profile.nameSelector,
+    aboutSelector: constants.profile.aboutSelector,
+    avatarSelector: constants.profile.avatarSelector
 })
 
 const popupWithImage = new PopupWithImage ({
-    selector:'.popup_role_image',
-    imageSelector: '.popup__image'
+    selector: constants.popupImageSelector.selector,
+    imageSelector: constants.popupImageSelector.imageSelector
 })
 popupWithImage.setEventListeners();
 
@@ -39,7 +39,7 @@ const cardRenderer = (card, user, section) => {
         api,
         card, 
         user, 
-        cardSelector: '#placeTemplate',
+        cardSelector: constants.cardSelector.cardSelector,
         handleRemove: function() {
             removingPopup.card = newCard;
             removingPopup.section = section;
@@ -59,7 +59,7 @@ Promise.all([api.getInitalCards(), userInfo.getUserInfo()]).then(([cards, user])
     userInfo.setUserInfo(user)
     cardsSection = new Section({
         items: cards,
-        itemSelector: '.place',
+        itemSelector: constants.itemSelector.itemSelector,
         renderer: function(card) {
             return cardRenderer(card, user, cardsSection)
         }
@@ -70,7 +70,7 @@ Promise.all([api.getInitalCards(), userInfo.getUserInfo()]).then(([cards, user])
  })
 
 const additionPopup = new PopupWithForm({
-    selector: '.popup_role_add',
+    selector: constants.popupSelector.additionPopupSelector,
     validator: cardEditFormValidator,
     submitHandler: function(data) {
         additionPopup.updateSubmitText('Создание...');
@@ -89,7 +89,7 @@ additionPopup.setEventListeners();
 document.querySelector('.profile__add-place').addEventListener('click', () => additionPopup.open());
 
 const removingPopup = new PopupWithForm({
-    selector: '.popup_role_remove',
+    selector: constants.popupSelector.removingPopupSelector,
     submitHandler: async function() {
         removingPopup.updateSubmitText('Удаление...');
         await api.removeCard(removingPopup.card._id).then(() => {
@@ -106,12 +106,12 @@ const removingPopup = new PopupWithForm({
 removingPopup.setEventListeners();
 
 const editProfilePopup = new PopupWithForm ({
-    selector: '.popup_role_edit',
-    inputSelector: '.popup__field',
+    selector: constants.popupSelector.editProfilePopupSelector,
+    inputSelector: constants.validation.inputSelector,
     validator: userEditFormValidator,
     initialValuesSelectors: {
-        username: '.profile__heading',
-        description: '.profile__description'
+        username: constants.initialValuesSelectors.username,
+        description: constants.initialValuesSelectors.description
     },
     submitHandler: async function(user) {
         editProfilePopup.updateSubmitText('Сохранение...');
@@ -129,7 +129,7 @@ editProfilePopup.setEventListeners();
 document.querySelector('.profile__edit').addEventListener('click', () => editProfilePopup.open());
 
 const editAvatarPopup = new PopupWithForm ({
-    selector: '.popup_role_edit-avatar',
+    selector: constants.popupSelector.editAvatarPopupSelector,
     validator: avatarEditFormValidator,
     submitHandler: async function({link}) {
         editAvatarPopup.updateSubmitText('Сохранение...');
