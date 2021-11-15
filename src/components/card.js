@@ -63,7 +63,7 @@ export default class Card {
         this._imagePlace = this._element.querySelector('.place__image');
 
         this._element.setAttribute('data-id', this._id);
-        this._element.querySelector('.place__image').style.backgroundImage = `url(${this._link})`;
+        this._imagePlace.style.backgroundImage = `url(${this._link})`;
         this._element.querySelector('.place__heading').textContent = this._name;
         this._updateLikeElement();
         this._setEventListeners();

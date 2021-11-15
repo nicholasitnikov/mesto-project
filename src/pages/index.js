@@ -10,23 +10,11 @@ import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from "../components/UserInfo";
 import { constants } from "../utils/constants.js";
 
-const api = new Api({
-    accessToken: constants.accessToken,
-    groupId: constants.groupId,
-    apiURL: constants.apiURL
-})
+const api = new Api(constants.api);
 
-// Включение валидации
-const validationOptions = {
-    inputSelector: '.popup__field',
-    submitButtonSelector: '.popup__button',
-    inputErrorClass: '.popup__field-error',
-    errorClass: 'popup__field-error_visible'
-}
-
-const userEditFormValidator = new FormValidator (validationOptions, document.forms.userEditForm);
-const avatarEditFormValidator = new FormValidator (validationOptions, document.forms.editAvatarForm);
-const cardEditFormValidator = new FormValidator (validationOptions, document.forms.addPlaceForm);
+const userEditFormValidator = new FormValidator (constants.validation, document.forms.userEditForm);
+const avatarEditFormValidator = new FormValidator (constants.validation, document.forms.editAvatarForm);
+const cardEditFormValidator = new FormValidator (constants.validation, document.forms.addPlaceForm);
 cardEditFormValidator.enableValidation();
 avatarEditFormValidator.enableValidation();
 userEditFormValidator.enableValidation();
@@ -58,7 +46,7 @@ const cardRenderer = (card, user, section) => {
             removingPopup.open();            
         },
         handleImage: function() {
-            popupWithImage.open(this._link, this._name);
+            popupWithImage.open(newCard._link, newCard._name);
         }                
     });
     const cardElement = newCard.getElement();
@@ -68,12 +56,12 @@ const cardRenderer = (card, user, section) => {
 // Загрузка карточек и данных пользователя
 
 Promise.all([api.getInitalCards(), userInfo.getUserInfo()]).then(([cards, user]) => {
-    userInfo.setUserInfo()
+    userInfo.setUserInfo(user)
     cardsSection = new Section({
         items: cards,
         itemSelector: '.place',
         renderer: function(card) {
-            return cardRenderer(card, user, this)
+            return cardRenderer(card, user, cardsSection)
         }
     },'.places')
     cardsSection.render();    
@@ -83,35 +71,34 @@ Promise.all([api.getInitalCards(), userInfo.getUserInfo()]).then(([cards, user])
 
 const additionPopup = new PopupWithForm({
     selector: '.popup_role_add',
-    openButtonSelector: '.profile__add-place',
+    validator: cardEditFormValidator,
     submitHandler: function(data) {
-        this.updateSubmitText('Создание...');
+        additionPopup.updateSubmitText('Создание...');
         api.createCard(data.name, data.link).then(card => {
-
-            cardsSection.addItem(card);            
-
-            this.updateSubmitText('Создать');
-            this.close();
+            cardsSection.placeInto(card, true);      
+            additionPopup.updateSubmitText('Создать');
+            additionPopup.close();
         }).catch(err => {
             console.log(err);
-            this.updateSubmitText('Ошибка');
+            additionPopup.updateSubmitText('Ошибка');
         })
     }
 });
 
 additionPopup.setEventListeners();
+document.querySelector('.profile__add-place').addEventListener('click', () => additionPopup.open());
 
 const removingPopup = new PopupWithForm({
     selector: '.popup_role_remove',
     submitHandler: async function() {
-        this.updateSubmitText('Удаление...');
-        await api.removeCard(this.card._id).then(() => {
-            this.section.removeItem(this.card._id);
-            this.updateSubmitText('Да');
-            this.close();
+        removingPopup.updateSubmitText('Удаление...');
+        await api.removeCard(removingPopup.card._id).then(() => {
+            removingPopup.section.removeItem(removingPopup.card._id);
+            removingPopup.updateSubmitText('Да');
+            removingPopup.close();
         }).catch(err => {
             console.log(err);
-            this.updateSubmitText('Ошибка');
+            removingPopup.updateSubmitText('Ошибка');
         })
         
     }
@@ -120,36 +107,41 @@ removingPopup.setEventListeners();
 
 const editProfilePopup = new PopupWithForm ({
     selector: '.popup_role_edit',
-    openButtonSelector: '.profile__edit',
+    inputSelector: '.popup__field',
+    validator: userEditFormValidator,
+    initialValuesSelectors: {
+        username: '.profile__heading',
+        description: '.profile__description'
+    },
     submitHandler: async function(user) {
-        this.updateSubmitText('Сохранение...');
+        editProfilePopup.updateSubmitText('Сохранение...');
         await api.updateUser(user).then((user) => {   
-            userInfo.setData(user);   
-            userInfo.setUserInfo();                    
-            this.updateSubmitText('Сохранить');
-            this.close();
+            userInfo.setUserInfo(user);                    
+            editProfilePopup.updateSubmitText('Сохранить');
+            editProfilePopup.close();
         }).catch(err => {
             console.log(err);
-            this.updateSubmitText('Ошибка');
+            editProfilePopup.updateSubmitText('Ошибка');
         })        
     }
 })
 editProfilePopup.setEventListeners();
+document.querySelector('.profile__edit').addEventListener('click', () => editProfilePopup.open());
 
 const editAvatarPopup = new PopupWithForm ({
     selector: '.popup_role_edit-avatar',
-    openButtonSelector: '.profile__avatar',
+    validator: avatarEditFormValidator,
     submitHandler: async function({link}) {
-        this.updateSubmitText('Сохранение...');
+        editAvatarPopup.updateSubmitText('Сохранение...');
         await api.updateAvatar(link).then((user) => {
-            userInfo.setData(user);   
-            userInfo.setUserInfo();                    
-            this.updateSubmitText('Сохранить');
-            this.close();
+            userInfo.setUserInfo(user);                    
+            editAvatarPopup.updateSubmitText('Сохранить');
+            editAvatarPopup.close();
         }).catch(err => {
             console.log(err);
-            this.updateSubmitText('Ошибка');
+            editAvatarPopup.updateSubmitText('Ошибка');
         })        
     }
 })
 editAvatarPopup.setEventListeners();
+document.querySelector('.profile__avatar').addEventListener('click', () => editAvatarPopup.open());

@@ -1,10 +1,23 @@
 import Popup from './Popup.js';
 export default class PopupWithForm extends Popup {
-    constructor({ selector, submitHandler, openButtonSelector }) {
+    constructor({ selector, submitHandler, validator, initialValuesSelectors, inputSelector }) {
         super({ selector });
         this._submitHandler = submitHandler;
-        this._openButtonSelector = openButtonSelector;
+        this._validator = validator;
+        this._form = this._element.querySelector('.form');
+        this._inputSelector = inputSelector;
+        this._initialValuesSelectors = initialValuesSelectors;
+        this._submitButton = this._form.querySelector('.popup__button');
     }
+
+    _setInitialValues() {
+        Object.keys(this._initialValuesSelectors).forEach(key => {
+            const input = document.querySelector(`${this._inputSelector}[name="${key}"]`);
+            input.value = document.querySelector(this._initialValuesSelectors[key]).textContent;
+        })
+        this._validator.updateSubmit();
+    }
+
     _getInputValues() {
         return Array.from(this._form.elements).reduce((res, current) => {
             if(current.value === '') { return res; }
@@ -19,18 +32,19 @@ export default class PopupWithForm extends Popup {
     }
     setEventListeners() {
         super.setEventListeners();
-        this._form = this._element.querySelector('.form');
         this._form.addEventListener('submit', (e) => this._submitForm(e));
-        if (this._openButtonSelector) {
-            document.querySelector(this._openButtonSelector).addEventListener('click', () => this.open());
-        }        
+    }
+    open() {
+        super.open();
+        if(this._initialValuesSelectors) {
+            this._setInitialValues();
+        }
     }
     close() {
         super.close();
-        this._form.reset();
+        this._validator.resetValidation();
     }
     updateSubmitText(text) {
-        this._submitButton = this._form.querySelector('.popup__button');
         this._submitButton.textContent = text;
     }
 }

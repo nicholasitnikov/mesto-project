@@ -11,20 +11,17 @@ export default class UserInfo {
     async getUserInfo() {
         try {
             const user = await this._api.getUser();
-            this.setData(user);
             return user;
         } catch (err) {
             console.log(err);
         }
     }
-    setUserInfo() {
-        this._nameElement.textContent = this._name;
-        this._aboutElement.textContent = this._about;
-        this._avatarElement.style.backgroundImage = `url("${this._avatar}")`;
-    }
-    setData(user) {
+    setUserInfo(user) {
         this._name = user.name;
         this._about = user.about;
         this._avatar = user.avatar;
+        this._nameElement.textContent = this._name;
+        this._aboutElement.textContent = this._about;
+        this._avatarElement.style.backgroundImage = `url("${this._avatar}")`;
     }
 }
