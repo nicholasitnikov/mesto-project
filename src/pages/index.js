@@ -11,7 +11,6 @@ import UserInfo from "../components/UserInfo";
 import { constants } from "../utils/constants.js";
 
 const api = new Api(constants.api);
-
 const userEditFormValidator = new FormValidator (constants.validation, document.forms.userEditForm);
 const avatarEditFormValidator = new FormValidator (constants.validation, document.forms.editAvatarForm);
 const cardEditFormValidator = new FormValidator (constants.validation, document.forms.addPlaceForm);
