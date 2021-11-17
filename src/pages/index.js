@@ -45,7 +45,7 @@ const cardRenderer = (card, user, section) => {
             removingPopup.open();            
         },
         handleImage: function() {
-            popupWithImage.open(newCard._link, newCard._name);
+            popupWithImage.open(card.link, card.name);
         }                
     });
     const cardElement = newCard.getElement();
