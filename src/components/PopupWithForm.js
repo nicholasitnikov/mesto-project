@@ -43,7 +43,9 @@ export default class PopupWithForm extends Popup {
     }
     close() {
         super.close();
-        this._validator.resetValidation();
+        if(this._validator) {
+            this._validator.resetValidation();
+        }
     }
     updateSubmitText(text) {
         this._submitButton.textContent = text;
